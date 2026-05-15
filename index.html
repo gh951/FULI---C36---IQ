@@ -711,13 +711,13 @@ html, body {
   letter-spacing:-.04em;
   font-family:'JetBrains Mono',monospace;
 }
-.score-percentile {
+.score-meta {
   font-size:14px;
   color:var(--text-2);
   margin-top:10px;
   font-weight:600;
 }
-.score-percentile b { color:var(--gold-deep); font-weight:900; font-size:16px; }
+.score-meta b { color:var(--gold-deep); font-weight:900; font-size:16px; }
 
 .score-tier {
   display:inline-flex;
@@ -1118,7 +1118,7 @@ html, body {
         <div class="tier-name">표준</div>
         <div class="tier-q">35<span class="tier-q-suffix">문항</span></div>
         <div class="tier-time">⏱️ 25분</div>
-        <div class="tier-desc">글로벌 IQ 비교용<br>전 세계 표준 형식</div>
+        <div class="tier-desc">5영역 균형 측정<br>표준 검사 형식</div>
       </div>
       <div class="tier-card selected" data-tier="formal" onclick="selectTier(this,'formal')">
         <span class="tier-tag premium">정식</span>
@@ -1193,11 +1193,13 @@ html, body {
     <div class="result-pre">🧠 FULI 인지 검사 결과</div>
     <div class="result-title">나의 아이큐</div>
     <div class="score-display">
-      <div class="score-label">FULI 점수 (베타)</div>
+      <div class="score-label">FULI 인지 점수 (베타)</div>
       <div class="score-number" id="scoreNum">—</div>
-      <div class="score-percentile" id="percentileNum">— 등급 —</div>
+      <div class="score-meta" id="scoreMeta">— 등급 —</div>
     </div>
     <div class="score-tier" id="scoreTier">— 등급 —</div>
+    <div class="score-actual-count" id="scoreActualCount" style="margin-top:12px;font-size:13px;color:var(--text-3);font-weight:600;text-align:center;">실제 출제 문항 — / —</div>
+    <div class="signal-stability" id="signalStability" style="margin-top:8px;font-size:13px;color:var(--text-2);font-weight:700;text-align:center;letter-spacing:.02em;">— 신호 안정도 —</div>
   </div>
 
   <div class="result-section open" id="sec-radar">
@@ -1321,8 +1323,15 @@ html, body {
     본 검사는 <b>FULI 자체 척도 (베타)</b> 기반의 자가검사 도구입니다.<br>
     임상적 진단·진학·취업 판정·법적 효력을 갖지 않습니다.<br>
     표준편차 보정·연령 정규화·표본 데이터 누적 전이며,<br>
+    백분위(상위 %) 표시는 표본 누적 後 V2부터 제공됩니다.<br>
+    응답 시간·결과는 본인 기기에만 저장됩니다 (본사 추적 없음).<br>
     정식 지능 평가는 면허받은 임상심리사와 상담하시기 바랍니다.
-    <div class="ft-mini">FULI · 나의 아이큐 · C-36 · V1.2 (베타) · 130문항 도형 데이터셋 · ED.2026</div>
+    <div class="ft-mini" style="margin-top:14px;line-height:1.7;">
+      <b>FULI 생태계</b><br>
+      CGO MESSAGE · cgo-voice-db · MUFE 백신 · 사령탑 · 나의 아이큐<br>
+      <span style="color:var(--text-3);">PCT 10-2026-0060113 · 발명자 이주원·이길원</span><br>
+      <span style="color:var(--text-3);">C-36 · V1.4 (베타) · 175문항 데이터셋 · ED.2026</span>
+    </div>
   </div>
 </div>
 
@@ -1346,7 +1355,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">C-36 · v1.2 (beta)</div>
+<div class="c36-mark">나의 아이큐 · v1.4 (beta)</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1819,7 +1828,13 @@ var Q_POOL = {
   ]
 };
 
-var testState = { questions: [], currentIdx: 0, answers: {}, tier: 'formal' };
+var testState = { questions: [], currentIdx: 0, answers: {}, tier: 'formal', 
+  // C-36 V1.4 - Reaction Time 측정 (大將 "사용자 폰=서버" 철학)
+  // 본사 추적 X, 사용자 폰에만 누적
+  reactionTimes: {},      // { qid: ms }
+  questionStartTime: 0,   // 현재 문제 시작 시각
+  totalStartTime: 0       // 전체 검사 시작 시각
+};
 
 // 4단계별 문항 추출 (大將 무중생유 명령)
 function _cgo36GetTestConfig(tier){
@@ -1858,6 +1873,10 @@ function startTest(){
   
   testState.questions = shuffle(testState.questions);
   
+  // C-36 V1.4 - 반응시간 측정 초기화 (大將 "사용자 폰=서버" 철학)
+  testState.reactionTimes = {};
+  testState.totalStartTime = Date.now();
+  
   // 시계 시작 (大將 명령)
   startTimer(cfg.time);
   
@@ -1877,6 +1896,10 @@ function shuffle(arr){
 function renderQuestion(){
   var q = testState.questions[testState.currentIdx];
   if(!q) return;
+  // C-36 V1.4 - 문제 시작 시각 기록 (Reaction Time 측정)
+  if(!testState.reactionTimes[q.qid]){
+    testState.questionStartTime = Date.now();
+  }
   var total = testState.questions.length;
   document.getElementById('qCounter').textContent = 'Q ' + String(testState.currentIdx+1).padStart(2,'0') + ' / ' + total;
   var domainMap = {
@@ -1925,6 +1948,10 @@ function renderQuestion(){
 
 function selectChoice(idx){
   var q = testState.questions[testState.currentIdx];
+  // C-36 V1.4 - 첫 클릭 반응시간 저장 (수정은 측정 X, 첫 직관만)
+  if(testState.reactionTimes[q.qid] === undefined && testState.questionStartTime > 0){
+    testState.reactionTimes[q.qid] = Date.now() - testState.questionStartTime;
+  }
   testState.answers[q.qid] = idx;
   renderQuestion();
 }
@@ -1965,12 +1992,24 @@ function calculateResult(){
   
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // C-36 V1.2 - FULI 점수 (베타 척도)
-  // ⚠️ 임상 IQ 검사 아님 / 표본 누적 전 베타
-  // 멘사 SD15/SD24 절대 비교 안 함 - 大將 무중생유 명령
-  // 王中의 王이 만든 신표준 - 향후 사용자 데이터 누적해서 정교화
+  // C-36 V1.3 - FULI 인지 점수 (베타)
+  // 大將 무중생유 · 王中의 王 신표준
+  // 
+  // ⚠️ 정직 표시:
+  //   - 임상 IQ 검사 아님
+  //   - 표준편차/연령 보정 없음
+  //   - 표본 데이터 누적 中 (V2에서 IRT 박입 예정)
+  //   - 백분위는 표본 누적 전 표시 안 함 (분석가 정직 권고 따름)
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  var fuliScore = Math.round(70 + correctRatio * 90); // 70~160 (FULI 점수, IQ 아님)
+  var fuliScore = Math.round(70 + correctRatio * 90); // 70~160 (FULI 자체 척도)
+  
+  // 신뢰도 ± 계산 (분석가 제안 #8 — 단순 버전, V2에서 표준오차로 정교화)
+  // 문항 수가 적을수록 ± 폭이 커짐 (낮은 신뢰도)
+  var totalAnswered = testState.questions.length;
+  var marginOfError;
+  if(totalAnswered >= 90)      marginOfError = 4;   // 정식·정밀 모드
+  else if(totalAnswered >= 35) marginOfError = 7;   // 표준 모드
+  else                          marginOfError = 10; // 약식 모드
   
   var tier, tierColor, tierDesc;
   if(correctRatio >= 0.95){ 
@@ -2003,17 +2042,94 @@ function calculateResult(){
     tierDesc = '성장 영역 (베타 척도)';
   }
   
-  document.getElementById('scoreNum').textContent = fuliScore;
-  var pNumEl = document.getElementById('percentileNum');
-  if(pNumEl) pNumEl.textContent = tierDesc;
+  // 점수 + 신뢰도 표시
+  document.getElementById('scoreNum').textContent = fuliScore + ' ±' + marginOfError;
+  
+  // 등급 + 신뢰도 안내
+  var metaEl = document.getElementById('scoreMeta');
+  if(metaEl) metaEl.textContent = tierDesc + ' · 신뢰구간 ±' + marginOfError;
   document.getElementById('scoreTier').textContent = tier;
   
+  // [수술②] 실측 출제 문항 수 표시 (광고 vs 실제 일치 검증)
+  var cfg = _cgo36GetTestConfig(testState.tier);
+  var actualEl = document.getElementById('scoreActualCount');
+  if(actualEl){
+    actualEl.textContent = '실제 출제 ' + totalAnswered + '문항 / 광고 ' + cfg.count + '문항';
+    if(totalAnswered === cfg.count){
+      actualEl.style.color = 'var(--text-3)';
+    } else {
+      // 불일치 시 정직 표시 (사용자 신뢰 확보)
+      actualEl.style.color = 'var(--gold-deep)';
+      actualEl.textContent += ' (풀 가용량 cap 적용)';
+    }
+  }
+  
   var domainScores = {};
+  var domainFuliScores = {};   // C-36 V1.4 - 영역별 FULI 점수 (70~160)
+  var domainMargins = {};       // C-36 V1.4 - 영역별 신뢰도 ±
   Object.keys(domainCorrect).forEach(function(d){
     domainScores[d] = domainTotal[d] > 0 ? Math.round(domainCorrect[d] / domainTotal[d] * 100) : 0;
+    // 영역별 정답률 → 영역별 FULI 점수
+    var dRatio = domainTotal[d] > 0 ? domainCorrect[d] / domainTotal[d] : 0;
+    domainFuliScores[d] = domainTotal[d] > 0 ? Math.round(70 + dRatio * 90) : null;
+    // 영역별 신뢰도: 문항 수가 적을수록 ± 크게
+    if(domainTotal[d] >= 25)      domainMargins[d] = 4;
+    else if(domainTotal[d] >= 10) domainMargins[d] = 7;
+    else if(domainTotal[d] >= 5)  domainMargins[d] = 10;
+    else                          domainMargins[d] = 15;
   });
   drawRadar(domainScores);
-  drawDomainScores(domainScores);
+  drawDomainScores(domainScores, domainFuliScores, domainMargins);
+  
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // C-36 V1.4 - Reaction Time 분석 + 신호 안정도 (GPT 제안 ③⑧)
+  // 大將 "사용자 폰=서버" 철학: 본사 추적 X, localStorage만
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  var rtList = Object.values(testState.reactionTimes);
+  if(rtList.length > 0){
+    var rtAvg = rtList.reduce(function(a,b){return a+b;},0) / rtList.length;
+    // 표준편차 = 신호 안정도 지표 (낮을수록 일관된 사고)
+    var rtVar = rtList.reduce(function(s,r){ return s + Math.pow(r-rtAvg, 2); },0) / rtList.length;
+    var rtStd = Math.sqrt(rtVar);
+    // 변동계수 (CV) = rtStd / rtAvg
+    var cv = rtAvg > 0 ? rtStd / rtAvg : 1;
+    
+    var signalStability, signalText;
+    if(cv < 0.3)      { signalStability = 'high';   signalText = '🟢 신호 안정도: 매우 높음'; }
+    else if(cv < 0.5) { signalStability = 'good';   signalText = '🟢 신호 안정도: 높음'; }
+    else if(cv < 0.8) { signalStability = 'medium'; signalText = '🟡 신호 안정도: 보통'; }
+    else if(cv < 1.2) { signalStability = 'low';    signalText = '🟠 신호 안정도: 낮음'; }
+    else              { signalStability = 'unstable'; signalText = '🔴 신호 안정도: 불안정'; }
+    
+    var stabEl = document.getElementById('signalStability');
+    if(stabEl) stabEl.textContent = signalText + ' · 평균 응답 ' + (rtAvg/1000).toFixed(1) + '초';
+    
+    // localStorage 누적 (大將 사용자 폰=서버 철학)
+    // 본사로 전송 X, 사용자 본인 데이터만 본인 폰에
+    try {
+      var history = JSON.parse(localStorage.getItem('fuli_iq_history') || '[]');
+      history.push({
+        date: new Date().toISOString(),
+        tier: testState.tier,
+        score: fuliScore,
+        margin: marginOfError,
+        domainScores: domainScores,
+        domainFuliScores: domainFuliScores,
+        rtAvg: Math.round(rtAvg),
+        rtStd: Math.round(rtStd),
+        cv: parseFloat(cv.toFixed(3)),
+        stability: signalStability,
+        totalAnswered: totalAnswered,
+        correctRatio: parseFloat(correctRatio.toFixed(3))
+      });
+      // 최근 50회만 보관 (사용자 폰 용량 관리)
+      if(history.length > 50) history = history.slice(-50);
+      localStorage.setItem('fuli_iq_history', JSON.stringify(history));
+    } catch(e){
+      // localStorage 사용 불가 (시크릿 모드 등) → 무시, 결과는 정상 표시
+    }
+  }
+  
   goTo('result');
 }
 
@@ -2060,24 +2176,35 @@ function drawRadar(scores){
   svg.innerHTML = html;
 }
 
-function drawDomainScores(scores){
+function drawDomainScores(scores, fuliScores, margins){
   var domains = [
-    { id:'pattern', ic:'🔷', nm:'패턴' },
-    { id:'spatial', ic:'🧊', nm:'공간' },
-    { id:'verbal', ic:'📖', nm:'언어' },
-    { id:'numeric', ic:'🔢', nm:'수리' },
-    { id:'memory', ic:'🧠', nm:'기억' }
+    { id:'pattern', ic:'🔷', nm:'패턴 인식' },
+    { id:'spatial', ic:'🧊', nm:'공간 추론' },
+    { id:'verbal',  ic:'📖', nm:'언어 능력' },
+    { id:'numeric', ic:'🔢', nm:'수리 논리' },
+    { id:'memory',  ic:'🧠', nm:'작업 기억' }
   ];
   var html = '';
   domains.forEach(function(d){
-    html += '<div class="dscore"><div class="ic">' + d.ic + '</div><div class="nm">' + d.nm + '</div><div class="vl">' + scores[d.id] + '</div></div>';
+    var pct = scores[d.id];
+    // C-36 V1.4 - 영역별 FULI 점수 + ± 표시 (GPT 제안 ①)
+    var fScore = (fuliScores && fuliScores[d.id] !== null && fuliScores[d.id] !== undefined) ? fuliScores[d.id] : null;
+    var marg = (margins && margins[d.id]) ? margins[d.id] : null;
+    var fScoreText = fScore !== null ? (fScore + (marg ? ' ±' + marg : '')) : '—';
+    html += '<div class="dscore">';
+    html += '<div class="ic">' + d.ic + '</div>';
+    html += '<div class="nm">' + d.nm + '</div>';
+    html += '<div class="vl">' + fScoreText + '</div>';
+    html += '<div class="dscore-pct" style="font-size:11px;color:var(--text-3);margin-top:4px;font-weight:600;">정답률 ' + pct + '%</div>';
+    html += '</div>';
   });
   document.getElementById('domainScores').innerHTML = html;
 }
 
 function shareResult(){
   var score = document.getElementById('scoreNum').textContent;
-  var msg = '🧠 나의 아이큐 · FULI\n\nFULI IQ Score: ' + score + '\n나도 측정해보기:\n[FULI 앱 링크]';
+  var tier = document.getElementById('scoreTier').textContent;
+  var msg = '🧠 나의 아이큐 · FULI\n\nFULI 인지 점수 (베타): ' + score + '\n등급: ' + tier + '\n\n나도 측정해보기:\n[FULI 앱 링크]';
   if(navigator.share){
     navigator.share({ title:'나의 아이큐 · FULI', text:msg }).catch(()=>{});
   } else if(navigator.clipboard){
