@@ -1291,7 +1291,7 @@ html, body {
     본 검사는 <b>FULI 자체 척도 기반의 자가검사 도구</b>입니다.<br>
     임상적 진단·진학·취업 판정·법적 효력을 갖지 않습니다.<br>
     정식 지능 평가는 면허받은 임상심리사와 상담하시기 바랍니다.
-    <div class="ft-mini">FULI · 나의 아이큐 · C-36 · V0.3 · ED.2026</div>
+    <div class="ft-mini">FULI · 나의 아이큐 · C-36 · V0.3.1 · ED.2026</div>
   </div>
 </div>
 
@@ -1315,7 +1315,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">C-36 · v0.3</div>
+<div class="c36-mark">C-36 · v0.3.1</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1324,6 +1324,27 @@ html, body {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 function isBuiltIn(){ return typeof cgoGoPage === 'function'; }
+
+// 이미지 로딩 실패 처리 + 새로고침 (C-36, 大將 직감 반영)
+function cgo36ImgFail(imgEl){
+  imgEl.style.display = 'none';
+  var fb = imgEl.parentElement.querySelector('.q-img-fallback');
+  if(fb) fb.style.display = 'block';
+}
+function cgo36ReloadImg(){
+  var q = testState.questions[testState.currentIdx];
+  if(!q || !q.image) return;
+  var box = document.getElementById('qImgBox');
+  if(!box) return;
+  var fb = box.querySelector('.q-img-fallback');
+  var img = box.querySelector('img');
+  if(fb) fb.style.display = 'none';
+  if(img){
+    img.style.display = 'block';
+    // 캐시 우회 — URL 끝에 타임스탬프 붙여 새로 요청
+    img.src = q.image + '?t=' + Date.now();
+  }
+}
 
 function goTo(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1497,9 +1518,15 @@ function renderQuestion(){
   var html = '<div class="q-text">' + q.q + '</div>';
   // 大將 작품 이미지 우선 표시, 없으면 텍스트 패턴 (C-36)
   if(q.image){
-    html += '<div class="q-image-box has-image">';
-    html += '<img src="' + q.image + '" alt="문제 도형" style="max-width:100%;height:auto;display:block;border-radius:8px;" onerror="this.parentElement.classList.add(\'placeholder\');this.style.display=\'none\';this.parentElement.querySelector(\'.q-pattern-fallback\').style.display=\'block\';">';
-    html += '<div class="q-pattern-fallback" style="display:none;font-size:14px;color:#94a3b8;">⚠️ 도형 로딩 실패</div>';
+    // 大將님 작품 이미지 + 로딩 실패 시 친절한 안내 + 새로고침 버튼 (C-36)
+    html += '<div class="q-image-box has-image" id="qImgBox">';
+    html += '<img src="' + q.image + '" alt="문제 도형" style="max-width:100%;height:auto;display:block;border-radius:8px;" onerror="cgo36ImgFail(this);">';
+    html += '<div class="q-img-fallback" style="display:none;text-align:center;padding:24px 16px;">';
+    html += '<div style="font-size:42px;margin-bottom:12px;">🖼️</div>';
+    html += '<div style="font-size:15px;font-weight:800;color:#475569;margin-bottom:6px;">도형을 불러오는 중이에요</div>';
+    html += '<div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">인터넷 연결이 잠시 느려졌을 수 있어요<br>아래 버튼을 한 번 눌러주세요</div>';
+    html += '<button onclick="cgo36ReloadImg()" style="padding:12px 28px;background:linear-gradient(135deg,#d4a843,#f0c860);color:#fff;border:none;border-radius:100px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(212,168,67,.35);font-family:inherit;">🔄 새로고침</button>';
+    html += '</div>';
     html += '</div>';
   } else if(q.pattern){
     var isPlaceholder = q.pattern.indexOf('🧊')>=0 || q.pattern.indexOf('🗺️')>=0;
