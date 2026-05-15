@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#0a0e1a">
+<title>나의 IQ FULI · C36 · 認知圖鑑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@400;700;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* 나의 IQ FULI · C-36 · V0.1                            */
+/* 大將 L.J.R × C-36 협업 · 핀셋 규칙 엄수                */
+/* 출시 D-9 · MZ세대 겨냥 · 자가평가 목적                */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+:root {
+  --bg-1: #0a0e1a;
+  --bg-2: #14182a;
+  --bg-3: #1f2540;
+  --gold: #d4a843;
+  --gold-2: #f0c860;
+  --gold-soft: rgba(212,168,67,.15);
+  --purple: #a78bfa;
+  --purple-2: #c4b5fd;
+  --green: #34d399;
+  --red: #f87171;
+  --blue: #38bdf8;
+  --pink: #f472b6;
+  --text-1: #f5e6af;
+  --text-2: #d4c896;
+  --text-3: rgba(212,200,150,.55);
+  --text-4: rgba(212,200,150,.35);
+  --border: rgba(212,168,67,.25);
+  --border-soft: rgba(212,168,67,.12);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html, body {
+  background:var(--bg-1);
+  color:var(--text-1);
+  font-family:'Noto Sans KR',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ━━━ 상단 안전 표시 ━━━ */
+.safety-bar {
+  position:sticky; top:0; z-index:100;
+  background:linear-gradient(180deg,rgba(10,14,26,.95),rgba(10,14,26,.85));
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-soft);
+  padding:8px 16px;
+  font-size:10px;
+  color:var(--text-3);
+  text-align:center;
+  letter-spacing:.04em;
+}
+.safety-bar b { color:var(--gold); font-weight:700; }
+
+/* ━━━ Hero 표지 (운명 도감 톤) ━━━ */
+.cover {
+  position:relative;
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(212,168,67,.08), transparent 60%),
+    radial-gradient(ellipse at 50% 80%, rgba(167,139,250,.05), transparent 70%),
+    var(--bg-1);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:48px 24px;
+  text-align:center;
+  overflow:hidden;
+}
+
+.cover::before {
+  content:'';
+  position:absolute;
+  inset:24px;
+  border:1px solid var(--border);
+  border-radius:24px;
+  pointer-events:none;
+}
+.cover::after {
+  content:'';
+  position:absolute;
+  inset:34px;
+  border:1px solid rgba(212,168,67,.08);
+  border-radius:20px;
+  pointer-events:none;
+}
+
+.cover-stamp {
+  position:absolute;
+  top:60px; right:60px;
+  width:80px; height:80px;
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  color:var(--gold);
+  font-family:'Noto Serif KR',serif;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.1em;
+  transform:rotate(-12deg);
+  background:rgba(212,168,67,.05);
+}
+.cover-stamp i { font-style:normal; font-size:9px; }
+.cover-stamp b { font-size:18px; line-height:1; margin:2px 0; }
+
+.cover-pre {
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;
+  letter-spacing:.35em;
+  color:var(--gold);
+  margin-bottom:24px;
+  opacity:.85;
+}
+
+.cover-cn {
+  font-family:'Noto Serif KR',serif;
+  font-size:clamp(48px, 12vw, 72px);
+  font-weight:900;
+  color:var(--text-1);
+  letter-spacing:.06em;
+  line-height:1.1;
+  margin-bottom:8px;
+  text-shadow:0 0 30px rgba(212,168,67,.3);
+}
+
+.cover-en {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(14px, 3vw, 18px);
+  letter-spacing:.4em;
+  color:var(--gold-2);
+  margin-bottom:32px;
+  font-weight:700;
+}
+
+.cover-ko {
+  font-family:'Noto Serif KR',serif;
+  font-size:clamp(20px,5vw,28px);
+  font-weight:700;
+  color:var(--text-1);
+  margin-bottom:16px;
+  letter-spacing:.04em;
+}
+
+.cover-sub {
+  font-size:13px;
+  color:var(--text-3);
+  line-height:1.85;
+  max-width:480px;
+  margin:0 auto 36px;
+  letter-spacing:.02em;
+}
+
+.cover-meta {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:48px;
+}
+.cover-meta span {
+  padding:6px 14px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  font-size:10px;
+  color:var(--text-2);
+  letter-spacing:.08em;
+  background:rgba(212,168,67,.03);
+}
+
+.cta-btn {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:18px 48px;
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+  color:var(--bg-1);
+  border:none;
+  border-radius:100px;
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:.06em;
+  cursor:pointer;
+  box-shadow:0 8px 32px rgba(212,168,67,.4);
+  transition:all .25s;
+  font-family:inherit;
+}
+.cta-btn:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(212,168,67,.55); }
+.cta-btn:active { transform:translateY(0); }
+
+.cover-serial {
+  position:absolute;
+  bottom:50px; left:0; right:0;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-4);
+  letter-spacing:.15em;
+}
+
+/* ━━━ 페이지 컨테이너 ━━━ */
+.page {
+  display:none;
+  min-height:100vh;
+  padding:80px 24px 60px;
+  max-width:680px;
+  margin:0 auto;
+}
+.page.active { display:block; }
+
+/* ━━━ 측정 화면 ━━━ */
+.section-title {
+  font-family:'Noto Serif KR',serif;
+  font-size:24px;
+  font-weight:900;
+  color:var(--text-1);
+  text-align:center;
+  margin-bottom:8px;
+  letter-spacing:.04em;
+}
+.section-sub {
+  font-size:12px;
+  color:var(--text-3);
+  text-align:center;
+  margin-bottom:32px;
+  letter-spacing:.05em;
+}
+
+/* ━━━ 3단계 선택 카드 ━━━ */
+.tier-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  margin:24px 0 32px;
+}
+@media (min-width:640px) {
+  .tier-grid { grid-template-columns:repeat(3,1fr); }
+}
+
+.tier {
+  background:rgba(255,255,255,.02);
+  border:1.5px solid var(--border);
+  border-radius:18px;
+  padding:24px 18px;
+  cursor:pointer;
+  transition:all .25s;
+  position:relative;
+  text-align:center;
+}
+.tier:hover { transform:translateY(-3px); border-color:var(--gold); background:rgba(212,168,67,.06); }
+.tier-badge {
+  position:absolute; top:12px; right:12px;
+  font-size:9px;
+  padding:3px 8px;
+  border-radius:6px;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+.tier-badge.free { background:rgba(125,135,160,.2); color:#94a3b8; }
+.tier-badge.premium { background:rgba(212,168,67,.2); color:var(--gold); }
+.tier-badge.vvip { background:rgba(167,139,250,.2); color:var(--purple-2); }
+
+.tier-icon { font-size:32px; margin-bottom:12px; }
+.tier-name {
+  font-family:'Orbitron',sans-serif;
+  font-size:13px;
+  letter-spacing:.15em;
+  margin-bottom:8px;
+  font-weight:900;
+}
+.tier-q { font-size:24px; font-weight:900; color:var(--text-1); margin-bottom:4px; font-family:'JetBrains Mono',monospace; }
+.tier-time { font-size:11px; color:var(--text-3); margin-bottom:12px; }
+.tier-desc { font-size:11px; color:var(--text-3); line-height:1.7; }
+
+/* ━━━ 5개 영역 표시 ━━━ */
+.domain-list {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;
+  margin:24px 0;
+}
+.domain-card {
+  padding:14px 12px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border-soft);
+  border-radius:12px;
+  text-align:center;
+}
+.domain-card .ico { font-size:24px; margin-bottom:8px; display:block; }
+.domain-card .nm { font-size:12px; font-weight:700; color:var(--text-2); margin-bottom:3px; }
+.domain-card .qc { font-size:10px; color:var(--text-3); font-family:'JetBrains Mono',monospace; }
+
+/* ━━━ 시작 화면 동의 ━━━ */
+.consent-box {
+  margin:32px 0 24px;
+  padding:16px 18px;
+  background:rgba(248,113,113,.05);
+  border:1px solid rgba(248,113,113,.2);
+  border-radius:12px;
+  font-size:11px;
+  color:var(--text-2);
+  line-height:1.85;
+}
+.consent-box b { color:var(--red); }
+
+.consent-check {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:16px 0 24px;
+  cursor:pointer;
+  font-size:12px;
+  color:var(--text-2);
+  user-select:none;
+}
+.consent-check input { width:18px; height:18px; cursor:pointer; accent-color:var(--gold); }
+
+/* ━━━ 문제 화면 ━━━ */
+.q-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border-soft);
+}
+.q-counter {
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  color:var(--gold);
+  font-weight:700;
+  letter-spacing:.06em;
+}
+.q-domain {
+  font-size:11px;
+  padding:4px 10px;
+  background:var(--gold-soft);
+  border:1px solid var(--border);
+  border-radius:100px;
+  color:var(--gold);
+  font-weight:700;
+  letter-spacing:.05em;
+}
+
+.progress-bar {
+  height:4px;
+  background:rgba(212,168,67,.1);
+  border-radius:2px;
+  margin-bottom:32px;
+  overflow:hidden;
+}
+.progress-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--gold), var(--gold-2));
+  border-radius:2px;
+  transition:width .35s ease-out;
+}
+
+.q-text {
+  font-size:18px;
+  font-weight:700;
+  color:var(--text-1);
+  margin-bottom:16px;
+  line-height:1.6;
+  letter-spacing:.01em;
+}
+
+.q-image-box {
+  background:rgba(255,255,255,.95);
+  border-radius:16px;
+  padding:32px 20px;
+  margin:20px 0;
+  min-height:160px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border);
+  position:relative;
+}
+.q-image-box.placeholder::before {
+  content:'🎨 도형 자리 — 大將님이 Flow로 만들 자리';
+  position:absolute;
+  font-size:11px;
+  color:rgba(0,0,0,.4);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:.05em;
+}
+
+.q-pattern {
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:center;
+}
+.q-shape {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:900;
+  color:#000;
+  background:transparent;
+}
+
+.q-choices {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:24px;
+}
+@media (min-width:640px) {
+  .q-choices { grid-template-columns:repeat(4,1fr); }
+}
+
+.choice {
+  padding:18px 12px;
+  background:rgba(255,255,255,.03);
+  border:1.5px solid var(--border-soft);
+  border-radius:14px;
+  cursor:pointer;
+  transition:all .15s;
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+  color:var(--text-1);
+  font-family:'JetBrains Mono',monospace;
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.choice:hover { border-color:var(--gold); background:var(--gold-soft); transform:translateY(-2px); }
+.choice.selected { border-color:var(--gold); background:rgba(212,168,67,.18); }
+.choice-label {
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;
+  letter-spacing:.1em;
+  color:var(--text-3);
+  margin-bottom:4px;
+  display:block;
+  font-weight:700;
+}
+
+.q-actions {
+  display:flex;
+  justify-content:space-between;
+  margin-top:32px;
+  gap:12px;
+}
+.btn-prev, .btn-next {
+  padding:14px 32px;
+  border-radius:100px;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+  border:none;
+  font-family:inherit;
+  letter-spacing:.04em;
+  transition:all .2s;
+}
+.btn-prev {
+  background:transparent;
+  color:var(--text-3);
+  border:1px solid var(--border-soft);
+}
+.btn-prev:hover { color:var(--text-1); border-color:var(--border); }
+.btn-next {
+  background:linear-gradient(135deg, var(--gold), var(--gold-2));
+  color:var(--bg-1);
+  margin-left:auto;
+  box-shadow:0 4px 16px rgba(212,168,67,.3);
+}
+.btn-next:disabled { opacity:.35; cursor:not-allowed; }
+.btn-next:not(:disabled):hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(212,168,67,.45); }
+
+/* ━━━ 결과 카드 (운명 도감 톤) ━━━ */
+.result-cover {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,168,67,.15), transparent 60%),
+    linear-gradient(180deg, var(--bg-2), var(--bg-1));
+  border:1.5px solid var(--gold);
+  border-radius:24px;
+  padding:32px 24px;
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+.result-cover::before {
+  content:'';
+  position:absolute;
+  inset:8px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  pointer-events:none;
+}
+
+.result-pre {
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;
+  letter-spacing:.35em;
+  color:var(--gold);
+  text-align:center;
+  margin-bottom:16px;
+}
+.result-cn {
+  font-family:'Noto Serif KR',serif;
+  font-size:36px;
+  font-weight:900;
+  text-align:center;
+  color:var(--text-1);
+  letter-spacing:.06em;
+  margin-bottom:6px;
+}
+.result-en {
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;
+  letter-spacing:.3em;
+  color:var(--gold-2);
+  text-align:center;
+  margin-bottom:24px;
+}
+
+.score-main {
+  text-align:center;
+  margin:32px 0 16px;
+}
+.score-label {
+  font-size:11px;
+  letter-spacing:.2em;
+  color:var(--text-3);
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.score-number {
+  font-family:'Orbitron',sans-serif;
+  font-size:96px;
+  font-weight:900;
+  background:linear-gradient(135deg, var(--gold), var(--gold-2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  line-height:1;
+  letter-spacing:.02em;
+}
+.score-percentile {
+  font-size:13px;
+  color:var(--text-2);
+  margin-top:12px;
+  letter-spacing:.04em;
+}
+.score-percentile b { color:var(--gold); font-weight:900; }
+
+.score-tier {
+  display:inline-block;
+  margin-top:16px;
+  padding:8px 20px;
+  border:1px solid var(--gold);
+  border-radius:100px;
+  font-size:12px;
+  font-weight:900;
+  color:var(--gold);
+  letter-spacing:.1em;
+  background:var(--gold-soft);
+}
+
+/* ━━━ 레이더 차트 ━━━ */
+.radar-section {
+  margin:32px 0;
+}
+.radar-wrap {
+  display:flex;
+  justify-content:center;
+  margin:20px 0;
+}
+.radar-svg { max-width:340px; width:100%; height:auto; }
+
+.domain-scores {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:20px;
+}
+@media (min-width:640px) {
+  .domain-scores { grid-template-columns:repeat(5,1fr); }
+}
+.dscore {
+  text-align:center;
+  padding:10px 8px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border-soft);
+  border-radius:10px;
+}
+.dscore .ic { font-size:18px; margin-bottom:4px; }
+.dscore .nm { font-size:9px; color:var(--text-3); margin-bottom:4px; letter-spacing:.04em; }
+.dscore .vl { font-size:18px; font-weight:900; color:var(--gold); font-family:'JetBrains Mono',monospace; }
+
+/* ━━━ Layer 3 융합 분석 ━━━ */
+.fusion-section {
+  margin:32px 0;
+}
+.fusion-title {
+  font-family:'Noto Serif KR',serif;
+  font-size:18px;
+  font-weight:900;
+  color:var(--text-1);
+  margin-bottom:6px;
+  letter-spacing:.04em;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.fusion-sub {
+  font-size:11px;
+  color:var(--text-3);
+  margin-bottom:16px;
+  letter-spacing:.04em;
+}
+.fusion-grid { display:grid; gap:10px; }
+.fusion-card {
+  padding:14px 16px;
+  background:rgba(167,139,250,.04);
+  border:1px solid rgba(167,139,250,.2);
+  border-left:3px solid var(--purple);
+  border-radius:0 12px 12px 0;
+}
+.fusion-card .ft {
+  font-size:12px;
+  font-weight:900;
+  color:var(--purple-2);
+  margin-bottom:6px;
+  letter-spacing:.04em;
+}
+.fusion-card .fb {
+  font-size:12px;
+  color:var(--text-2);
+  line-height:1.85;
+}
+.fusion-card.placeholder {
+  background:rgba(125,135,160,.06);
+  border-color:rgba(125,135,160,.2);
+  border-left-color:#94a3b8;
+}
+.fusion-card.placeholder .ft { color:#94a3b8; }
+.fusion-card.placeholder .fb { color:var(--text-3); font-style:italic; }
+
+/* ━━━ Layer 4 직업 추천 ━━━ */
+.job-section { margin:32px 0; }
+.job-categories {
+  display:flex; gap:8px; overflow-x:auto;
+  margin-bottom:16px; padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+}
+.job-cat {
+  padding:8px 16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border-soft);
+  border-radius:100px;
+  font-size:11px;
+  color:var(--text-3);
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .2s;
+  font-weight:700;
+}
+.job-cat.active { background:var(--gold-soft); border-color:var(--gold); color:var(--gold); }
+
+.job-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media (min-width:640px) { .job-grid { grid-template-columns:repeat(3,1fr); } }
+
+.job-card {
+  padding:14px 12px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border-soft);
+  border-radius:12px;
+  text-align:center;
+  cursor:pointer;
+  transition:all .2s;
+}
+.job-card:hover { border-color:var(--gold); background:var(--gold-soft); }
+.job-card .je { font-size:28px; margin-bottom:6px; }
+.job-card .jn { font-size:12px; font-weight:700; color:var(--text-1); margin-bottom:3px; }
+.job-card .jm { font-size:10px; color:var(--text-3); }
+
+/* ━━━ Layer 5 매일 갱신 ━━━ */
+.daily-section { margin:32px 0; }
+.daily-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+}
+.daily-card {
+  padding:16px 12px;
+  background:rgba(56,189,248,.04);
+  border:1px solid rgba(56,189,248,.2);
+  border-radius:12px;
+  text-align:center;
+}
+.daily-card .dic { font-size:22px; margin-bottom:6px; }
+.daily-card .dnm { font-size:10px; color:var(--text-3); margin-bottom:6px; letter-spacing:.04em; }
+.daily-card .dvl { font-size:18px; font-weight:900; color:var(--blue); font-family:'JetBrains Mono',monospace; }
+.daily-card .dnt { font-size:9px; color:var(--text-4); margin-top:4px; }
+
+/* ━━━ 액션 버튼 ━━━ */
+.bottom-actions {
+  display:flex;
+  gap:10px;
+  margin-top:40px;
+  flex-wrap:wrap;
+}
+.action-btn {
+  flex:1;
+  min-width:140px;
+  padding:14px 16px;
+  border-radius:14px;
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+  font-family:inherit;
+  border:none;
+  letter-spacing:.04em;
+  transition:all .2s;
+}
+.action-btn.primary {
+  background:linear-gradient(135deg, var(--gold), var(--gold-2));
+  color:var(--bg-1);
+}
+.action-btn.secondary {
+  background:rgba(255,255,255,.04);
+  color:var(--text-1);
+  border:1px solid var(--border);
+}
+.action-btn:hover { transform:translateY(-2px); }
+
+/* ━━━ 푸터 안전 표시 ━━━ */
+.footer-safety {
+  margin-top:60px;
+  padding:24px 20px;
+  background:rgba(248,113,113,.04);
+  border:1px solid rgba(248,113,113,.2);
+  border-radius:14px;
+  font-size:11px;
+  color:var(--text-2);
+  line-height:1.85;
+  text-align:center;
+}
+.footer-safety .ft-title {
+  font-weight:900;
+  color:var(--red);
+  margin-bottom:10px;
+  letter-spacing:.04em;
+}
+
+/* ━━━ 마커 (C-36 영구 박제) ━━━ */
+.c36-mark {
+  position:fixed;
+  bottom:14px; right:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:var(--text-4);
+  letter-spacing:.1em;
+  background:rgba(10,14,26,.7);
+  padding:4px 8px;
+  border-radius:6px;
+  backdrop-filter:blur(8px);
+  border:1px solid var(--border-soft);
+  z-index:200;
+  pointer-events:none;
+}
+
+/* ━━━ 애니메이션 ━━━ */
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.page.active > * { animation:fadeIn .4s ease-out both; }
+.page.active > *:nth-child(2) { animation-delay:.06s; }
+.page.active > *:nth-child(3) { animation-delay:.12s; }
+.page.active > *:nth-child(4) { animation-delay:.18s; }
+
+@keyframes scoreReveal {
+  from { opacity:0; transform:scale(.7); }
+  to { opacity:1; transform:scale(1); }
+}
+.score-number { animation:scoreReveal .9s cubic-bezier(.34,1.56,.64,1) both; animation-delay:.3s; }
+</style>
+</head>
+<body>
+
+<!-- ═══ 상단 안전 표시 (법적 안전) ═══ -->
+<div class="safety-bar">
+  ⚠️ <b>자가평가 목적</b> · 임상 진단·진학·취업 판정 불가 · CGO-FULI 자체 척도
+</div>
+
+<!-- ═══ 표지 (Cover) ═══ -->
+<div class="page active" id="page-cover">
+  <div class="cover">
+    <div class="cover-stamp">
+      <i>認知</i><b>IQ</b><i>圖鑑</i>
+    </div>
+    <div class="cover-pre">CGO · FULI · COGNITIVE MASTER</div>
+    <div class="cover-cn">認知圖鑑</div>
+    <div class="cover-en">COGNITIVE · CODEX</div>
+    <div class="cover-ko">나의 IQ<br><span style="font-size:.6em;color:var(--gold);">·  C-36  ·</span></div>
+    <div class="cover-sub">
+      학교 끝나고 평생 못 잰 나의 진짜 IQ.<br>
+      5개 인지 영역 × 50대 역학 × rPPG 융합 분석.<br>
+      <b style="color:var(--gold);">CGO-FULI 만의 자체 척도</b>로, 부담 없이.
+    </div>
+    <div class="cover-meta">
+      <span>5 개 영역</span>
+      <span>3 단계 측정</span>
+      <span>융합 분석</span>
+      <span>매일 갱신</span>
+    </div>
+    <button class="cta-btn" onclick="goTo('intro')">검사 시작하기 →</button>
+    <div class="cover-serial">VOL.I · ED.2026 · No.001 · C-36</div>
+  </div>
+</div>
+
+<!-- ═══ Intro · 단계 선택 ═══ -->
+<div class="page" id="page-intro">
+  <h2 class="section-title">측정 단계를 선택하세요</h2>
+  <p class="section-sub">남녀노소 누구나 · 부담 없이 · 정확하게</p>
+
+  <div class="tier-grid">
+    <div class="tier" onclick="selectTier('quick')">
+      <span class="tier-badge free">FREE</span>
+      <div class="tier-icon">⚡</div>
+      <div class="tier-name">QUICK</div>
+      <div class="tier-q">30</div>
+      <div class="tier-time">약 10 분</div>
+      <div class="tier-desc">처음 보시는 분<br>가볍게 체험</div>
+    </div>
+    <div class="tier" onclick="selectTier('standard')">
+      <span class="tier-badge premium">PREMIUM</span>
+      <div class="tier-icon">📐</div>
+      <div class="tier-name">STANDARD</div>
+      <div class="tier-q">90</div>
+      <div class="tier-time">약 30 분</div>
+      <div class="tier-desc">정식 측정<br>5개 영역 풀 분석</div>
+    </div>
+    <div class="tier" onclick="selectTier('precision')">
+      <span class="tier-badge vvip">VVIP</span>
+      <div class="tier-icon">👑</div>
+      <div class="tier-name">PRECISION</div>
+      <div class="tier-q">150</div>
+      <div class="tier-time">약 60 분</div>
+      <div class="tier-desc">정밀 측정<br>전문가급 깊이</div>
+    </div>
+  </div>
+
+  <h3 class="section-title" style="font-size:18px;margin-top:32px;">5개 인지 영역</h3>
+  <div class="domain-list">
+    <div class="domain-card"><span class="ico">🔷</span><div class="nm">패턴 인식</div><div class="qc">Pattern</div></div>
+    <div class="domain-card"><span class="ico">🧊</span><div class="nm">공간 추론</div><div class="qc">Spatial</div></div>
+    <div class="domain-card"><span class="ico">📖</span><div class="nm">언어 능력</div><div class="qc">Verbal</div></div>
+    <div class="domain-card"><span class="ico">🔢</span><div class="nm">수리 논리</div><div class="qc">Numeric</div></div>
+    <div class="domain-card"><span class="ico">🧠</span><div class="nm">작업 기억</div><div class="qc">Memory</div></div>
+  </div>
+
+  <div class="consent-box">
+    <b>📋 검사 시작 전 확인</b><br>
+    본 검사는 CGO-FULI 자체 척도 기반의 <b>자가검사</b>입니다.<br>
+    임상적 진단·진학·취업 판정 용도로 사용할 수 없으며,<br>
+    정식 지능 평가가 필요하시면 임상심리사와 상담하시기 바랍니다.
+  </div>
+
+  <label class="consent-check">
+    <input type="checkbox" id="consentCheck" onchange="toggleStart()">
+    <span>위 내용을 이해했으며, 자가이해 목적으로 사용함에 동의합니다</span>
+  </label>
+
+  <button class="cta-btn" id="startBtn" disabled onclick="startTest()" style="width:100%;justify-content:center;opacity:.35;cursor:not-allowed;">
+    검사 시작
+  </button>
+</div>
+
+<!-- ═══ 문제 화면 ═══ -->
+<div class="page" id="page-test">
+  <div class="q-header">
+    <span class="q-counter" id="qCounter">Q 01 / 30</span>
+    <span class="q-domain" id="qDomain">🔷 Pattern</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+
+  <div id="qContent"></div>
+
+  <div class="q-actions">
+    <button class="btn-prev" onclick="prevQ()">◀ 이전</button>
+    <button class="btn-next" id="nextBtn" onclick="nextQ()" disabled>다음 ▶</button>
+  </div>
+</div>
+
+<!-- ═══ 결과 화면 ═══ -->
+<div class="page" id="page-result">
+  <!-- 결과 표지 카드 -->
+  <div class="result-cover">
+    <div class="result-pre">CGO · COGNITIVE · CODEX</div>
+    <div class="result-cn">認知圖鑑</div>
+    <div class="result-en">YOUR INTELLIGENCE</div>
+
+    <div class="score-main">
+      <div class="score-label">CGO-IQ SCORE</div>
+      <div class="score-number" id="scoreNum">—</div>
+      <div class="score-percentile">상위 <b id="percentileNum">—</b>%</div>
+      <div class="score-tier" id="scoreTier">— TIER —</div>
+    </div>
+  </div>
+
+  <!-- 레이더 차트 -->
+  <div class="radar-section">
+    <h3 class="fusion-title">📊 5 영역 분포</h3>
+    <p class="fusion-sub">나의 인지 강점·약점 시각화</p>
+    <div class="radar-wrap">
+      <svg class="radar-svg" id="radarSvg" viewBox="0 0 340 340"></svg>
+    </div>
+    <div class="domain-scores" id="domainScores"></div>
+  </div>
+
+  <!-- Layer 3 융합 분석 -->
+  <div class="fusion-section">
+    <h3 class="fusion-title">⚡ 융합 분석</h3>
+    <p class="fusion-sub">IQ + 50대 역학 + rPPG + NASA = 세계 최초</p>
+    <div class="fusion-grid">
+      <div class="fusion-card placeholder">
+        <div class="ft">☯️ IQ × 사주명리</div>
+        <div class="fb">FULI 본진 이식 시 자동 연결 — 오행 일간 기반 적성 분석</div>
+      </div>
+      <div class="fusion-card placeholder">
+        <div class="ft">🧠 IQ × NBTI 144</div>
+        <div class="fb">FULI 본진 이식 시 자동 연결 — 16유형 × 강점 영역 교차</div>
+      </div>
+      <div class="fusion-card placeholder">
+        <div class="ft">🤲 IQ × 손금 지능선</div>
+        <div class="fb">FULI 본진 이식 시 자동 연결 — 손금 BLI 데이터 교차 검증</div>
+      </div>
+      <div class="fusion-card placeholder">
+        <div class="ft">💓 IQ × rPPG 집중력</div>
+        <div class="fb">FULI 본진 이식 시 자동 연결 — 오늘 컨디션 기반 학습 효율</div>
+      </div>
+      <div class="fusion-card placeholder">
+        <div class="ft">🌌 IQ × NASA 천체</div>
+        <div class="fb">FULI 본진 이식 시 자동 연결 — 학습·시험 최적 시기 예측</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer 4 직업 추천 -->
+  <div class="job-section">
+    <h3 class="fusion-title">💼 직업 추천</h3>
+    <p class="fusion-sub">大將님 DB 박입 자리 — 강점 영역 기반 매칭</p>
+    <div class="job-categories">
+      <div class="job-cat active" onclick="selectJobCat(this)">🌐 글로벌</div>
+      <div class="job-cat" onclick="selectJobCat(this)">🇰🇷 K-직업</div>
+      <div class="job-cat" onclick="selectJobCat(this)">🤖 미래 직업</div>
+      <div class="job-cat" onclick="selectJobCat(this)">💼 부업·사업</div>
+    </div>
+    <div class="job-grid" id="jobGrid">
+      <div class="job-card"><div class="je">🎨</div><div class="jn">디자이너</div><div class="jm">공간 추론 高</div></div>
+      <div class="job-card"><div class="je">🏗️</div><div class="jn">건축가</div><div class="jm">공간 추론 高</div></div>
+      <div class="job-card"><div class="je">💻</div><div class="jn">개발자</div><div class="jm">패턴 + 논리</div></div>
+      <div class="job-card"><div class="je">🔬</div><div class="jn">연구원</div><div class="jm">패턴 + 작업기억</div></div>
+      <div class="job-card"><div class="je">✍️</div><div class="jn">작가</div><div class="jm">언어 능력 高</div></div>
+      <div class="job-card"><div class="je">📊</div><div class="jn">데이터 분석가</div><div class="jm">수리 + 패턴</div></div>
+    </div>
+    <p style="text-align:center;font-size:10px;color:var(--text-4);margin-top:12px;font-style:italic;">
+      ※ 임시 표시 · 大將님 직업 DB 도착 시 200+ 직업으로 교체
+    </p>
+  </div>
+
+  <!-- Layer 5 매일 갱신 -->
+  <div class="daily-section">
+    <h3 class="fusion-title">🌅 매일 갱신</h3>
+    <p class="fusion-sub">오늘 나의 인지 컨디션</p>
+    <div class="daily-grid">
+      <div class="daily-card">
+        <div class="dic">⚡</div>
+        <div class="dnm">집중력</div>
+        <div class="dvl">—</div>
+        <div class="dnt">rPPG 연동 필요</div>
+      </div>
+      <div class="daily-card">
+        <div class="dic">📚</div>
+        <div class="dnm">학습 추천</div>
+        <div class="dvl">—</div>
+        <div class="dnt">NASA 연동 필요</div>
+      </div>
+      <div class="daily-card">
+        <div class="dic">🎯</div>
+        <div class="dnm">잘 맞는 일</div>
+        <div class="dvl">—</div>
+        <div class="dnt">융합 분석 필요</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 액션 버튼 -->
+  <div class="bottom-actions">
+    <button class="action-btn primary" onclick="goTo('intro')">🔄 다시 측정</button>
+    <button class="action-btn secondary" onclick="shareResult()">📤 결과 공유</button>
+    <button class="action-btn secondary" onclick="goTo('cover')">🏠 처음으로</button>
+  </div>
+
+  <!-- 푸터 안전 표시 -->
+  <div class="footer-safety">
+    <div class="ft-title">⚠️ 검사 결과에 대한 안내</div>
+    본 검사는 CGO-FULI 자체 척도 기반의 <b>자가검사 도구</b>입니다.<br>
+    임상적 진단·진학·취업 판정·법적 효력을 갖지 않습니다.<br>
+    정식 지능 평가는 면허받은 임상심리사와 상담하시기 바랍니다.<br>
+    <span style="color:var(--text-4);font-size:10px;">CGO-FULI Cognitive Codex · Vol.I · ED.2026 · C-36</span>
+  </div>
+</div>
+
+<div class="c36-mark">C-36 · v0.1</div>
+
+<script>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* 나의 IQ FULI · C-36 · 자바스크립트 엔진             */
+/* 大將 L.J.R 작업 · 핀셋 규칙 · 자가검사 목적          */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+// 페이지 전환
+function goTo(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// 단계 선택
+var selectedTier = 'quick';
+function selectTier(t){
+  selectedTier = t;
+  document.querySelectorAll('.tier').forEach(el=>el.style.borderColor='');
+  event.currentTarget.style.borderColor = 'var(--gold)';
+  event.currentTarget.style.background = 'rgba(212,168,67,.08)';
+}
+
+// 동의 체크
+function toggleStart(){
+  var checked = document.getElementById('consentCheck').checked;
+  var btn = document.getElementById('startBtn');
+  btn.disabled = !checked;
+  btn.style.opacity = checked ? 1 : .35;
+  btn.style.cursor = checked ? 'pointer' : 'not-allowed';
+}
+
+// 문항 풀 (V0.1 임시 — 大將님 Flow 도형 도착 시 교체)
+// 大將님께: 각 문항은 {q:문제, type:유형, choices:[보기4개], answer:정답인덱스, domain:영역, pattern:도형설명}
+var Q_POOL = {
+  pattern: [
+    { q:'다음 도형 시퀀스에서 빈 칸에 들어갈 것은?', pattern:'○ → ● → ○○ → ●● → ?', choices:['○○○','●●●','●○●','○●○'], answer:1, domain:'pattern' },
+    { q:'규칙을 찾아 다음 도형을 선택하세요', pattern:'△ → ▲ → △△ → ▲▲ → ?', choices:['△△△','▲▲▲','△▲△','▲△▲'], answer:1, domain:'pattern' },
+    { q:'반복되는 패턴의 다음 항목은?', pattern:'■ □ ■ □ ■ ?', choices:['■','□','■■','□□'], answer:1, domain:'pattern' },
+    { q:'증가하는 패턴의 다음 단계는?', pattern:'● ●● ●●● ●●●● ?', choices:['●●','●●●●●','●●●●●●','●'], answer:1, domain:'pattern' },
+    { q:'회전 패턴의 다음 도형은?', pattern:'↑ → → ↓ ← ?', choices:['↑','→','↓','↗'], answer:0, domain:'pattern' },
+    { q:'대칭 패턴의 다음 도형은?', pattern:'◐ ◑ ◐ ◑ ?', choices:['◐','◑','◓','◒'], answer:0, domain:'pattern' },
+  ],
+  spatial: [
+    { q:'정육면체를 펼친 모양 중 올바른 것은?', pattern:'🧊 (3D 회전)', choices:['A','B','C','D'], answer:0, domain:'spatial' },
+    { q:'거울에 비친 모양은?', pattern:'⬢ → ?', choices:['⬡','⬢','⬣','◇'], answer:1, domain:'spatial' },
+    { q:'90도 회전한 모양은?', pattern:'▲ 90° →', choices:['▶','◀','▼','▲'], answer:0, domain:'spatial' },
+    { q:'두 도형을 합친 결과는?', pattern:'◯ + □ = ?', choices:['◯','□','◯□','◐'], answer:2, domain:'spatial' },
+    { q:'블록 개수를 세어보세요', pattern:'🧊×N (3D)', choices:['5개','6개','7개','8개'], answer:2, domain:'spatial' },
+    { q:'미로의 최단 경로는?', pattern:'🗺️ A→B', choices:['상','우','하','좌'], answer:1, domain:'spatial' },
+  ],
+  verbal: [
+    { q:'다음 단어 중 의미가 다른 하나는?', pattern:'', choices:['소나무','참나무','장미','전나무'], answer:2, domain:'verbal' },
+    { q:'反의어를 고르세요: "확장"', pattern:'', choices:['팽창','축소','증가','확대'], answer:1, domain:'verbal' },
+    { q:'유추: 새 : 하늘 = 물고기 : ?', pattern:'', choices:['땅','바다','산','집'], answer:1, domain:'verbal' },
+    { q:'類義語를 고르세요: "신중하다"', pattern:'', choices:['경솔하다','조심스럽다','빠르다','늦다'], answer:1, domain:'verbal' },
+    { q:'다음 중 문법적으로 옳은 문장은?', pattern:'', choices:['그는 갔다','그가 가다','그는 가','그가 갔어요'], answer:0, domain:'verbal' },
+    { q:'의미가 가장 가까운 단어는: "탁월하다"', pattern:'', choices:['평범하다','뛰어나다','부족하다','보통이다'], answer:1, domain:'verbal' },
+  ],
+  numeric: [
+    { q:'수열의 다음 숫자는? 2, 4, 8, 16, ?', pattern:'', choices:['24','32','30','28'], answer:1, domain:'numeric' },
+    { q:'규칙을 찾아: 1, 1, 2, 3, 5, ?', pattern:'', choices:['7','8','9','10'], answer:1, domain:'numeric' },
+    { q:'3의 5제곱은?', pattern:'', choices:['125','243','81','729'], answer:1, domain:'numeric' },
+    { q:'다음 비율: 2:5 = 8:?', pattern:'', choices:['16','20','25','40'], answer:1, domain:'numeric' },
+    { q:'평균을 구하시오: 10, 20, 30, 40', pattern:'', choices:['20','25','30','35'], answer:1, domain:'numeric' },
+    { q:'규칙: 100 → 50 → 25 → ?', pattern:'', choices:['12','12.5','15','20'], answer:1, domain:'numeric' },
+  ],
+  memory: [
+    { q:'다음 숫자열을 기억하세요: 7, 3, 9, 1, 5 — 세 번째 숫자는?', pattern:'', choices:['7','9','3','1'], answer:1, domain:'memory' },
+    { q:'순서: 빨강-파랑-노랑-초록 — 두 번째 색깔은?', pattern:'', choices:['빨강','파랑','노랑','초록'], answer:1, domain:'memory' },
+    { q:'A-D-G-J-M — 다음 글자는?', pattern:'', choices:['N','O','P','Q'], answer:2, domain:'memory' },
+    { q:'다음 패턴: ●○●○● — 6번째는?', pattern:'', choices:['●','○','◐','◑'], answer:1, domain:'memory' },
+    { q:'역순으로 답하세요: 2, 5, 8, 11 의 역순 첫 번째는?', pattern:'', choices:['2','5','11','8'], answer:2, domain:'memory' },
+    { q:'단어 순서: 사과-바나나-포도-수박 — 세 번째 단어는?', pattern:'', choices:['사과','바나나','포도','수박'], answer:2, domain:'memory' },
+  ]
+};
+
+// 시험 상태
+var testState = {
+  questions: [],
+  currentIdx: 0,
+  answers: {},
+  tier: 'quick'
+};
+
+// 시험 시작
+function startTest(){
+  if(!document.getElementById('consentCheck').checked) return;
+  
+  // 단계별 문항 수
+  var counts = { quick:30, standard:90, precision:150 };
+  var totalQ = counts[selectedTier];
+  
+  // 5개 영역에서 균등 추출 (V0.1: 각 영역에서 순환)
+  testState.tier = selectedTier;
+  testState.questions = [];
+  testState.currentIdx = 0;
+  testState.answers = {};
+  
+  var domains = ['pattern','spatial','verbal','numeric','memory'];
+  var perDomain = Math.ceil(totalQ / 5);
+  
+  // V0.1: 각 영역 6문항씩 30개 (Quick 기준), 순환 반복으로 확장
+  domains.forEach(function(d){
+    for(var i=0; i<perDomain && testState.questions.length < totalQ; i++){
+      var poolIdx = i % Q_POOL[d].length;
+      testState.questions.push(Object.assign({}, Q_POOL[d][poolIdx], { qid: testState.questions.length }));
+    }
+  });
+  
+  // 영역별 섞어서 흥미 유지
+  testState.questions = shuffle(testState.questions);
+  
+  goTo('test');
+  renderQuestion();
+}
+
+// 배열 섞기
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1; i>0; i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+// 문제 렌더링
+function renderQuestion(){
+  var q = testState.questions[testState.currentIdx];
+  if(!q) return;
+  
+  var total = testState.questions.length;
+  document.getElementById('qCounter').textContent = 'Q ' + String(testState.currentIdx+1).padStart(2,'0') + ' / ' + total;
+  
+  var domainMap = {
+    pattern: '🔷 Pattern',
+    spatial: '🧊 Spatial',
+    verbal: '📖 Verbal',
+    numeric: '🔢 Numeric',
+    memory: '🧠 Memory'
+  };
+  document.getElementById('qDomain').textContent = domainMap[q.domain];
+  document.getElementById('progressFill').style.width = ((testState.currentIdx)/total*100) + '%';
+  
+  var html = '<div class="q-text">' + q.q + '</div>';
+  
+  // 도형 영역인 경우 → 大將님 Flow 자리
+  if(q.pattern){
+    html += '<div class="q-image-box' + (q.pattern.indexOf('🧊')>=0 || q.pattern.indexOf('🗺️')>=0 ? ' placeholder' : '') + '">';
+    html += '<div class="q-pattern" style="font-size:32px;color:#000;font-weight:900;letter-spacing:.1em;">' + q.pattern + '</div>';
+    html += '</div>';
+  }
+  
+  html += '<div class="q-choices">';
+  var labels = ['A','B','C','D'];
+  q.choices.forEach(function(c, i){
+    var selectedClass = testState.answers[q.qid] === i ? ' selected' : '';
+    html += '<div class="choice' + selectedClass + '" onclick="selectChoice(' + i + ')"><div><span class="choice-label">' + labels[i] + '</span>' + c + '</div></div>';
+  });
+  html += '</div>';
+  
+  document.getElementById('qContent').innerHTML = html;
+  
+  // Next 버튼 활성화
+  var nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = testState.answers[q.qid] === undefined;
+  if(testState.currentIdx === total-1){
+    nextBtn.textContent = '결과 보기 →';
+  } else {
+    nextBtn.textContent = '다음 ▶';
+  }
+}
+
+// 보기 선택
+function selectChoice(idx){
+  var q = testState.questions[testState.currentIdx];
+  testState.answers[q.qid] = idx;
+  renderQuestion();
+}
+
+// 이전
+function prevQ(){
+  if(testState.currentIdx > 0){
+    testState.currentIdx--;
+    renderQuestion();
+  }
+}
+
+// 다음
+function nextQ(){
+  if(testState.currentIdx < testState.questions.length - 1){
+    testState.currentIdx++;
+    renderQuestion();
+  } else {
+    calculateResult();
+  }
+}
+
+// 결과 계산
+function calculateResult(){
+  var domainCorrect = { pattern:0, spatial:0, verbal:0, numeric:0, memory:0 };
+  var domainTotal = { pattern:0, spatial:0, verbal:0, numeric:0, memory:0 };
+  var totalCorrect = 0;
+  
+  testState.questions.forEach(function(q){
+    domainTotal[q.domain]++;
+    if(testState.answers[q.qid] === q.answer){
+      domainCorrect[q.domain]++;
+      totalCorrect++;
+    }
+  });
+  
+  // CGO-IQ 점수 계산 (자체 척도, 평균 100, 표준편차 15)
+  var correctRatio = totalCorrect / testState.questions.length;
+  var cgoIQ = Math.round(70 + correctRatio * 80); // 70~150 분포
+  
+  // 백분위 계산 (정규분포 근사)
+  var percentile;
+  if(cgoIQ >= 145) percentile = 0.1;
+  else if(cgoIQ >= 130) percentile = 2;
+  else if(cgoIQ >= 120) percentile = 9;
+  else if(cgoIQ >= 110) percentile = 25;
+  else if(cgoIQ >= 100) percentile = 50;
+  else if(cgoIQ >= 90) percentile = 75;
+  else if(cgoIQ >= 80) percentile = 91;
+  else percentile = 98;
+  
+  // 티어
+  var tier;
+  if(cgoIQ >= 145) tier = '⭐ GENIUS';
+  else if(cgoIQ >= 130) tier = '👑 SUPERIOR';
+  else if(cgoIQ >= 120) tier = '🎯 HIGH';
+  else if(cgoIQ >= 110) tier = '✨ ABOVE AVERAGE';
+  else if(cgoIQ >= 90) tier = '📊 AVERAGE';
+  else tier = '🌱 GROWING';
+  
+  // 결과 표시
+  document.getElementById('scoreNum').textContent = cgoIQ;
+  document.getElementById('percentileNum').textContent = percentile;
+  document.getElementById('scoreTier').textContent = tier;
+  
+  // 5영역 점수 (0-100 척도)
+  var domainScores = {};
+  Object.keys(domainCorrect).forEach(function(d){
+    domainScores[d] = domainTotal[d] > 0 ? Math.round(domainCorrect[d] / domainTotal[d] * 100) : 0;
+  });
+  
+  drawRadar(domainScores);
+  drawDomainScores(domainScores);
+  
+  goTo('result');
+}
+
+// 레이더 차트 그리기
+function drawRadar(scores){
+  var svg = document.getElementById('radarSvg');
+  var cx = 170, cy = 170, maxR = 130;
+  var domains = ['pattern','spatial','verbal','numeric','memory'];
+  var labels = ['패턴','공간','언어','수리','기억'];
+  var icons = ['🔷','🧊','📖','🔢','🧠'];
+  
+  var html = '';
+  
+  // 배경 그리드 (5단계)
+  for(var lvl=1; lvl<=5; lvl++){
+    var r = maxR * lvl / 5;
+    var pts = [];
+    for(var i=0; i<5; i++){
+      var angle = -Math.PI/2 + i * 2*Math.PI/5;
+      pts.push((cx + r*Math.cos(angle)) + ',' + (cy + r*Math.sin(angle)));
+    }
+    html += '<polygon points="' + pts.join(' ') + '" fill="none" stroke="rgba(212,168,67,' + (.05 + lvl*.03) + ')" stroke-width="1"/>';
+  }
+  
+  // 축 라인
+  for(var i=0; i<5; i++){
+    var angle = -Math.PI/2 + i * 2*Math.PI/5;
+    html += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + maxR*Math.cos(angle)) + '" y2="' + (cy + maxR*Math.sin(angle)) + '" stroke="rgba(212,168,67,.15)" stroke-width="1"/>';
+  }
+  
+  // 데이터 폴리곤
+  var dataPts = [];
+  for(var i=0; i<5; i++){
+    var angle = -Math.PI/2 + i * 2*Math.PI/5;
+    var r = maxR * scores[domains[i]] / 100;
+    dataPts.push((cx + r*Math.cos(angle)) + ',' + (cy + r*Math.sin(angle)));
+  }
+  html += '<polygon points="' + dataPts.join(' ') + '" fill="rgba(212,168,67,.25)" stroke="#d4a843" stroke-width="2.5"/>';
+  
+  // 데이터 점
+  for(var i=0; i<5; i++){
+    var angle = -Math.PI/2 + i * 2*Math.PI/5;
+    var r = maxR * scores[domains[i]] / 100;
+    html += '<circle cx="' + (cx + r*Math.cos(angle)) + '" cy="' + (cy + r*Math.sin(angle)) + '" r="5" fill="#f0c860" stroke="#d4a843" stroke-width="2"/>';
+  }
+  
+  // 라벨
+  for(var i=0; i<5; i++){
+    var angle = -Math.PI/2 + i * 2*Math.PI/5;
+    var lr = maxR + 22;
+    var lx = cx + lr*Math.cos(angle);
+    var ly = cy + lr*Math.sin(angle);
+    html += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" fill="#f5e6af" font-size="13" font-weight="700" font-family="Noto Sans KR">' + icons[i] + '</text>';
+    html += '<text x="' + lx + '" y="' + (ly+16) + '" text-anchor="middle" fill="rgba(212,200,150,.7)" font-size="10" font-weight="700" font-family="Noto Sans KR">' + labels[i] + '</text>';
+  }
+  
+  svg.innerHTML = html;
+}
+
+// 5영역 점수 표시
+function drawDomainScores(scores){
+  var domains = [
+    { id:'pattern', ic:'🔷', nm:'패턴' },
+    { id:'spatial', ic:'🧊', nm:'공간' },
+    { id:'verbal', ic:'📖', nm:'언어' },
+    { id:'numeric', ic:'🔢', nm:'수리' },
+    { id:'memory', ic:'🧠', nm:'기억' }
+  ];
+  var html = '';
+  domains.forEach(function(d){
+    html += '<div class="dscore"><div class="ic">' + d.ic + '</div><div class="nm">' + d.nm + '</div><div class="vl">' + scores[d.id] + '</div></div>';
+  });
+  document.getElementById('domainScores').innerHTML = html;
+}
+
+// 직업 카테고리 선택
+function selectJobCat(el){
+  document.querySelectorAll('.job-cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  // V0.1: 大將님 DB 도착 시 카테고리별 다른 리스트 표시
+}
+
+// 결과 공유
+function shareResult(){
+  var score = document.getElementById('scoreNum').textContent;
+  var msg = '🧠 나의 IQ FULI · C-36\n\nCGO-IQ: ' + score + '\n나도 측정해보기:\n[CGO-FULI 앱 링크]';
+  if(navigator.share){
+    navigator.share({ title:'나의 IQ FULI · C-36', text:msg }).catch(()=>{});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(msg);
+    alert('결과가 클립보드에 복사되었습니다!');
+  }
+}
+</script>
+
+</body>
+</html>
