@@ -1291,7 +1291,7 @@ html, body {
     본 검사는 <b>FULI 자체 척도 기반의 자가검사 도구</b>입니다.<br>
     임상적 진단·진학·취업 판정·법적 효력을 갖지 않습니다.<br>
     정식 지능 평가는 면허받은 임상심리사와 상담하시기 바랍니다.
-    <div class="ft-mini">FULI · 나의 아이큐 · C-36 · V0.2 · ED.2026</div>
+    <div class="ft-mini">FULI · 나의 아이큐 · C-36 · V0.3 · ED.2026</div>
   </div>
 </div>
 
@@ -1315,7 +1315,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">C-36 · v0.2</div>
+<div class="c36-mark">C-36 · v0.3</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1406,7 +1406,8 @@ function restartTest(){
 
 var Q_POOL = {
   pattern: [
-    { q:'다음 도형 시퀀스에서 빈 칸에 들어갈 것은?', pattern:'○ → ● → ○○ → ●● → ?', choices:['○○○','●●●','●○●','○●○'], answer:1, domain:'pattern' },
+    // 大將 작품 #001 - Flow 도형 (크기 점진 증가 패턴)
+    { q:'다음 도형 시퀀스에서 빈 칸에 들어갈 것은?', image:'images/pattern/p001.jpeg', choices:['● (4번보다 큰 원)','● (1번 크기 작은 원)','■ (사각형)','●● (두 개의 원)'], answer:0, domain:'pattern' },
     { q:'규칙을 찾아 다음 도형을 선택하세요', pattern:'△ → ▲ → △△ → ▲▲ → ?', choices:['△△△','▲▲▲','△▲△','▲△▲'], answer:1, domain:'pattern' },
     { q:'반복되는 패턴의 다음 항목은?', pattern:'■ □ ■ □ ■ ?', choices:['■','□','■■','□□'], answer:1, domain:'pattern' },
     { q:'증가하는 패턴의 다음 단계는?', pattern:'● ●● ●●● ●●●● ?', choices:['●●','●●●●●','●●●●●●','●'], answer:1, domain:'pattern' },
@@ -1494,7 +1495,13 @@ function renderQuestion(){
   document.getElementById('qDomain').textContent = domainMap[q.domain];
   document.getElementById('progressFill').style.width = ((testState.currentIdx)/total*100) + '%';
   var html = '<div class="q-text">' + q.q + '</div>';
-  if(q.pattern){
+  // 大將 작품 이미지 우선 표시, 없으면 텍스트 패턴 (C-36)
+  if(q.image){
+    html += '<div class="q-image-box has-image">';
+    html += '<img src="' + q.image + '" alt="문제 도형" style="max-width:100%;height:auto;display:block;border-radius:8px;" onerror="this.parentElement.classList.add(\'placeholder\');this.style.display=\'none\';this.parentElement.querySelector(\'.q-pattern-fallback\').style.display=\'block\';">';
+    html += '<div class="q-pattern-fallback" style="display:none;font-size:14px;color:#94a3b8;">⚠️ 도형 로딩 실패</div>';
+    html += '</div>';
+  } else if(q.pattern){
     var isPlaceholder = q.pattern.indexOf('🧊')>=0 || q.pattern.indexOf('🗺️')>=0;
     html += '<div class="q-image-box' + (isPlaceholder?' placeholder':'') + '">';
     html += '<div class="q-pattern">' + q.pattern + '</div>';
