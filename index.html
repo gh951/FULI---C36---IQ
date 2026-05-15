@@ -806,6 +806,108 @@ html, body {
 .dscore .nm { font-size:9px; color:var(--text-3); margin:2px 0; font-weight:700; }
 .dscore .vl { font-size:15px; font-weight:900; color:var(--gold-deep); font-family:'JetBrains Mono',monospace; }
 
+/* ━━━ C-36 V1.5 - Cognitive Signature ━━━ */
+.cognitive-signature {
+  background:linear-gradient(135deg, rgba(212,168,67,.05), rgba(15,23,42,.02));
+  border:1px solid rgba(212,168,67,.15);
+  border-radius:14px;
+  padding:18px 14px;
+}
+.cog-sig-style {
+  font-size:17px;
+  font-weight:900;
+  color:var(--text-1);
+  text-align:center;
+  letter-spacing:.01em;
+  margin-bottom:6px;
+}
+.cog-sig-detail {
+  font-size:13px;
+  color:var(--text-2);
+  text-align:center;
+  font-weight:700;
+  margin-bottom:14px;
+}
+.cog-sig-traits {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:14px;
+}
+.cog-trait {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.cog-trait-label {
+  font-size:10px;
+  color:var(--text-3);
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.cog-trait-value {
+  font-size:13px;
+  color:var(--gold-deep);
+  font-weight:900;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ━━━ C-36 V1.5 - Cognitive Profile ━━━ */
+.cognitive-profile {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.prof-row {
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:10px;
+  background:var(--bg-soft);
+  border-radius:10px;
+  padding:10px 12px;
+}
+.prof-name {
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+}
+.prof-name b {
+  font-size:13px;
+  color:var(--text-1);
+  font-weight:800;
+  font-family:'Inter','JetBrains Mono',sans-serif;
+  letter-spacing:.01em;
+}
+.prof-name span {
+  font-size:10px;
+  color:var(--text-3);
+  font-weight:600;
+}
+.prof-grade {
+  font-size:11px;
+  color:var(--text-2);
+  font-weight:800;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:100px;
+  padding:3px 9px;
+  letter-spacing:.02em;
+}
+.prof-score {
+  font-size:13px;
+  font-weight:900;
+  color:var(--gold-deep);
+  font-family:'JetBrains Mono',monospace;
+  min-width:60px;
+  text-align:right;
+}
+
 /* ━━━ 융합 ━━━ */
 .fusion-list { display:grid; gap:8px; }
 .fusion-card {
@@ -1218,6 +1320,44 @@ html, body {
     </div>
   </div>
 
+  <!-- C-36 V1.5 - Cognitive Signature (GPT 제안 ⑧) -->
+  <div class="result-section open" id="sec-signature">
+    <div class="result-section-head" onclick="toggleSec('sec-signature')">
+      <div class="result-section-title">
+        <span class="result-section-title-em">🧬</span>
+        Cognitive Signature
+        <span style="font-size:10px;color:var(--text-3);font-weight:600;margin-left:4px;">인지 서명 · 베타</span>
+      </div>
+      <div class="result-section-arrow">▼</div>
+    </div>
+    <div class="result-section-body">
+      <div class="cognitive-signature" id="cognitiveSignature">
+        <div class="cog-sig-style">— 측정 중 —</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C-36 V1.5 - Cognitive Profile (GPT 제안 ①, 학술 표현) -->
+  <div class="result-section open" id="sec-profile">
+    <div class="result-section-head" onclick="toggleSec('sec-profile')">
+      <div class="result-section-title">
+        <span class="result-section-title-em">🔬</span>
+        Cognitive Profile
+        <span style="font-size:10px;color:var(--text-3);font-weight:600;margin-left:4px;">인지 프로파일 (베타)</span>
+      </div>
+      <div class="result-section-arrow">▼</div>
+    </div>
+    <div class="result-section-body">
+      <div class="cognitive-profile" id="cognitiveProfile">
+        <div style="text-align:center;color:var(--text-3);font-size:13px;padding:16px;">— 분석 중 —</div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;font-weight:600;">
+        Measurement stability · Reasoning latency profile · Adaptive calibration confidence<br>
+        <span style="color:var(--gold-deep);">※ 표본 누적 後 V2부터 standardized norm 비교 활성화</span>
+      </div>
+    </div>
+  </div>
+
   <div class="result-section" id="sec-fusion">
     <div class="result-section-head" onclick="toggleSec('sec-fusion')">
       <div class="result-section-title">
@@ -1330,7 +1470,7 @@ html, body {
       <b>FULI 생태계</b><br>
       CGO MESSAGE · cgo-voice-db · MUFE 백신 · 사령탑 · 나의 아이큐<br>
       <span style="color:var(--text-3);">PCT 10-2026-0060113 · 발명자 이주원·이길원</span><br>
-      <span style="color:var(--text-3);">C-36 · V1.4 (베타) · 175문항 데이터셋 · ED.2026</span>
+      <span style="color:var(--text-3);">C-36 · V1.5 (베타) · 175문항 · Cognitive Signature · ED.2026</span>
     </div>
   </div>
 </div>
@@ -1355,7 +1495,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">나의 아이큐 · v1.4 (beta)</div>
+<div class="c36-mark">나의 아이큐 · v1.5 (beta)</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1833,7 +1973,10 @@ var testState = { questions: [], currentIdx: 0, answers: {}, tier: 'formal',
   // 본사 추적 X, 사용자 폰에만 누적
   reactionTimes: {},      // { qid: ms }
   questionStartTime: 0,   // 현재 문제 시작 시각
-  totalStartTime: 0       // 전체 검사 시작 시각
+  totalStartTime: 0,      // 전체 검사 시작 시각
+  // C-36 V1.5 - GPT 제안 ② Hesitation 추적 (어려운 길 = 후자)
+  // 선택 변경 = 확신도·인지 부하 지표
+  changeCounts: {}        // { qid: 변경 횟수 }
 };
 
 // 4단계별 문항 추출 (大將 무중생유 명령)
@@ -1875,6 +2018,7 @@ function startTest(){
   
   // C-36 V1.4 - 반응시간 측정 초기화 (大將 "사용자 폰=서버" 철학)
   testState.reactionTimes = {};
+  testState.changeCounts = {};   // C-36 V1.5 - Hesitation 초기화
   testState.totalStartTime = Date.now();
   
   // 시계 시작 (大將 명령)
@@ -1951,6 +2095,11 @@ function selectChoice(idx){
   // C-36 V1.4 - 첫 클릭 반응시간 저장 (수정은 측정 X, 첫 직관만)
   if(testState.reactionTimes[q.qid] === undefined && testState.questionStartTime > 0){
     testState.reactionTimes[q.qid] = Date.now() - testState.questionStartTime;
+  }
+  // C-36 V1.5 - 선택 변경 추적 (Hesitation 지표, GPT 제안 ②)
+  // 같은 문제에서 답을 바꾸면 변경 횟수 ++
+  if(testState.answers[q.qid] !== undefined && testState.answers[q.qid] !== idx){
+    testState.changeCounts[q.qid] = (testState.changeCounts[q.qid] || 0) + 1;
   }
   testState.answers[q.qid] = idx;
   renderQuestion();
@@ -2120,7 +2269,10 @@ function calculateResult(){
         cv: parseFloat(cv.toFixed(3)),
         stability: signalStability,
         totalAnswered: totalAnswered,
-        correctRatio: parseFloat(correctRatio.toFixed(3))
+        correctRatio: parseFloat(correctRatio.toFixed(3)),
+        // C-36 V1.5 - Hesitation 데이터 (GPT 제안 ②)
+        totalChanges: Object.values(testState.changeCounts).reduce(function(a,b){return a+b;},0),
+        avgChangesPerQ: parseFloat((Object.values(testState.changeCounts).reduce(function(a,b){return a+b;},0) / totalAnswered).toFixed(2))
       });
       // 최근 50회만 보관 (사용자 폰 용량 관리)
       if(history.length > 50) history = history.slice(-50);
@@ -2130,7 +2282,114 @@ function calculateResult(){
     }
   }
   
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // C-36 V1.5 - Cognitive Signature (GPT 제안 ⑧)
+  // 인지 스타일 분석 — "당신은 어떤 추론자인가"
+  // 大將 "후자 = 어려운 길 = 세계 최고 = C-36 오래 가는 길"
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  var totalChanges = Object.values(testState.changeCounts).reduce(function(a,b){return a+b;},0);
+  var avgChanges = totalChanges / Math.max(totalAnswered, 1);
+  var cognitiveSignature = _cgo36BuildSignature(correctRatio, rtList, avgChanges, domainScores);
+  _cgo36RenderSignature(cognitiveSignature);
+  _cgo36RenderProfile(domainFuliScores, domainMargins, domainScores);
+  
   goTo('result');
+}
+
+// C-36 V1.5 - Cognitive Signature 빌더
+// GPT 제안 ⑧: "빠른 직관형 추론자 / 높은 규칙 압축 능력 / 낮은 인지 지속성" 같은 스타일 분석
+function _cgo36BuildSignature(correctRatio, rtList, avgChanges, domainScores){
+  var sig = { traits: [], style: '', detail: '' };
+  
+  // 1) 추론 속도 (반응시간 기반)
+  var rtAvg = rtList.length > 0 ? rtList.reduce(function(a,b){return a+b;},0)/rtList.length : 0;
+  var speedTier;
+  if(rtAvg < 5000)       { speedTier = '🚀 신속 직관형';   sig.traits.push({label:'Reasoning Speed', value:'Fast'}); }
+  else if(rtAvg < 12000) { speedTier = '⚡ 균형 분석형';   sig.traits.push({label:'Reasoning Speed', value:'Balanced'}); }
+  else                   { speedTier = '🔬 심층 숙고형';   sig.traits.push({label:'Reasoning Speed', value:'Deliberate'}); }
+  
+  // 2) 확신도 (선택 변경 횟수 기반)
+  var confidence;
+  if(avgChanges < 0.1)   { confidence = '높은 확신';       sig.traits.push({label:'Decision Confidence', value:'High'}); }
+  else if(avgChanges < 0.3){ confidence = '신중한 검토';   sig.traits.push({label:'Decision Confidence', value:'Moderate'}); }
+  else                   { confidence = '탐색적 수정';     sig.traits.push({label:'Decision Confidence', value:'Exploratory'}); }
+  
+  // 3) 인지 영역 강점 (가장 높은 영역)
+  var maxDomain = 'pattern', maxScore = 0;
+  Object.keys(domainScores).forEach(function(d){
+    if(domainScores[d] > maxScore){ maxScore = domainScores[d]; maxDomain = d; }
+  });
+  var domainNameMap = {
+    pattern: '추상 패턴 인식',
+    spatial: '공간 추론',
+    verbal:  '언어 추론',
+    numeric: '수리 논리',
+    memory:  '작업 기억'
+  };
+  var strength = domainNameMap[maxDomain];
+  sig.traits.push({label:'Cognitive Strength', value:strength});
+  
+  // 4) 전반적 능력 추정
+  var efficiency;
+  if(correctRatio >= 0.85)      efficiency = 'Exceptional';
+  else if(correctRatio >= 0.75) efficiency = 'High';
+  else if(correctRatio >= 0.60) efficiency = 'Above Average';
+  else if(correctRatio >= 0.40) efficiency = 'Average';
+  else                          efficiency = 'Developing';
+  sig.traits.push({label:'Reasoning Efficiency', value:efficiency});
+  
+  // Signature 텍스트 조합
+  sig.style = speedTier + ' · ' + confidence;
+  sig.detail = strength + ' 강점 · 추론 효율 ' + efficiency;
+  
+  return sig;
+}
+
+// C-36 V1.5 - Cognitive Signature 렌더링
+function _cgo36RenderSignature(sig){
+  var el = document.getElementById('cognitiveSignature');
+  if(!el) return;
+  var html = '<div class="cog-sig-style">' + sig.style + '</div>';
+  html += '<div class="cog-sig-detail">' + sig.detail + '</div>';
+  html += '<div class="cog-sig-traits">';
+  sig.traits.forEach(function(t){
+    html += '<div class="cog-trait"><span class="cog-trait-label">' + t.label + '</span><span class="cog-trait-value">' + t.value + '</span></div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// C-36 V1.5 - 인지 프로파일 (GPT 제안 ①)
+// "Fluid abstraction: Exceptional" 같은 학술 표현
+function _cgo36RenderProfile(fuliScores, margins, pctScores){
+  var el = document.getElementById('cognitiveProfile');
+  if(!el) return;
+  var domains = [
+    { id:'pattern', en:'Fluid Reasoning',     kr:'유동지능 (추상 패턴)' },
+    { id:'spatial', en:'Spatial Cognition',   kr:'공간 인지' },
+    { id:'verbal',  en:'Verbal Abstraction',  kr:'언어 추상' },
+    { id:'numeric', en:'Quantitative Logic',  kr:'수리 논리' },
+    { id:'memory',  en:'Working Memory',      kr:'작업 기억' }
+  ];
+  var html = '';
+  domains.forEach(function(d){
+    var sc = fuliScores[d.id];
+    var mg = margins[d.id];
+    var pct = pctScores[d.id];
+    var grade;
+    if(pct >= 90)      grade = 'Exceptional';
+    else if(pct >= 75) grade = 'High';
+    else if(pct >= 60) grade = 'Above Average';
+    else if(pct >= 40) grade = 'Average';
+    else               grade = 'Developing';
+    var scoreText = (sc !== null && sc !== undefined) ? sc + ' ±' + mg : '—';
+    html += '<div class="prof-row">';
+    html += '<div class="prof-name"><b>' + d.en + '</b><span>' + d.kr + '</span></div>';
+    html += '<div class="prof-grade">' + grade + '</div>';
+    html += '<div class="prof-score">' + scoreText + '</div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
 }
 
 function drawRadar(scores){
