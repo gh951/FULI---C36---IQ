@@ -542,6 +542,31 @@ html, body {
   font-family:'JetBrains Mono',monospace;
 }
 
+/* ━━━ C-36 V1.6 - 시각 카드 (텍스트 문제 가독성 ↑) ━━━ */
+/* 大將님 동생분 피드백: "글로 된 문제 이해 어려움" 박입 */
+.q-visual-box {
+  background:linear-gradient(135deg, #fefcf5 0%, #fafbfc 100%);
+  border:2px solid rgba(212,168,67,.18);
+  border-radius:18px;
+  padding:clamp(28px, 5vw, 48px) 20px;
+  margin:14px 0;
+  min-height:140px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(15,23,42,.04);
+}
+.q-visual {
+  font-size:clamp(22px, 4.5vw, 32px);
+  color:var(--text-1);
+  font-weight:900;
+  letter-spacing:.04em;
+  font-family:'JetBrains Mono','Inter',sans-serif;
+  text-align:center;
+  line-height:1.7;
+  letter-spacing:.06em;
+}
+
 .q-choices {
   display:grid;
   grid-template-columns:repeat(2, 1fr);
@@ -1470,7 +1495,7 @@ html, body {
       <b>FULI 생태계</b><br>
       CGO MESSAGE · cgo-voice-db · MUFE 백신 · 사령탑 · 나의 아이큐<br>
       <span style="color:var(--text-3);">PCT 10-2026-0060113 · 발명자 이주원·이길원</span><br>
-      <span style="color:var(--text-3);">C-36 · V1.5 (베타) · 175문항 · Cognitive Signature · ED.2026</span>
+      <span style="color:var(--text-3);">C-36 · V1.6 (베타) · 175문항 · 시각 가독성 강화 · ED.2026</span>
     </div>
   </div>
 </div>
@@ -1495,7 +1520,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">나의 아이큐 · v1.5 (beta)</div>
+<div class="c36-mark">나의 아이큐 · v1.6 (beta)</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1916,55 +1941,55 @@ var Q_POOL = {
   pattern: _cgo36BuildPatternPool(),  // 100개
   spatial: _cgo36BuildSpatialPool(),  // 30개
   verbal: [
-    { q:'다음 단어 중 의미가 다른 하나는?', choices:['소나무','참나무','장미','전나무'], answer:2, domain:'verbal' },
-    { q:'반의어를 고르세요: "확장"', choices:['팽창','축소','증가','확대'], answer:1, domain:'verbal' },
-    { q:'유추: 새 : 하늘 = 물고기 : ?', choices:['땅','바다','산','집'], answer:1, domain:'verbal' },
-    { q:'유의어를 고르세요: "신중하다"', choices:['경솔하다','조심스럽다','빠르다','늦다'], answer:1, domain:'verbal' },
-    { q:'유추: 손 : 장갑 = 발 : ?', choices:['양말','신발','구두','버선'], answer:1, domain:'verbal' },
-    { q:'의미가 가장 가까운 단어는: "탁월하다"', choices:['평범하다','뛰어나다','부족하다','보통이다'], answer:1, domain:'verbal' },
-    { q:'다음 중 의미가 다른 하나는?', choices:['기쁨','즐거움','행복','슬픔'], answer:3, domain:'verbal' },
-    { q:'유추: 부분 : 전체 = 한 그루 : ?', choices:['나무','숲','잎','뿌리'], answer:1, domain:'verbal' },
-    { q:'유추: 의사 : 병원 = 교사 : ?', choices:['집','학교','책','연필'], answer:1, domain:'verbal' },
-    { q:'유추: 더위 : 여름 = 추위 : ?', choices:['봄','가을','겨울','계절'], answer:2, domain:'verbal' },
-    { q:'유추: 책 : 읽다 = 음식 : ?', choices:['보다','먹다','자다','달리다'], answer:1, domain:'verbal' },
-    { q:'다음 중 가장 다른 하나는?', choices:['빨강','파랑','노랑','사각형'], answer:3, domain:'verbal' },
-    { q:'유의어: "거대하다"와 가장 가까운 것은?', choices:['작다','크다','얇다','짧다'], answer:1, domain:'verbal' },
-    { q:'유추: 시작 : 끝 = 출발 : ?', choices:['도착','이동','경로','길'], answer:0, domain:'verbal' },
-    { q:'다음 중 의미 관계가 다른 하나는?', choices:['낮:밤','크다:작다','뜨겁다:차갑다','책:공책'], answer:3, domain:'verbal' }
+    { q:'아래 네 단어 中 의미가 다른 하나는?', visual:'소나무  ·  참나무  ·  장미  ·  전나무', choices:['소나무','참나무','장미','전나무'], answer:2, domain:'verbal' },
+    { q:'다음 단어의 반의어를 고르세요', visual:'"확장"\n↔', choices:['팽창','축소','증가','확대'], answer:1, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'새  :  하늘\n=\n물고기  :  ?', choices:['땅','바다','산','집'], answer:1, domain:'verbal' },
+    { q:'다음 단어의 유의어를 고르세요', visual:'"신중하다"\n≈', choices:['경솔하다','조심스럽다','빠르다','늦다'], answer:1, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'손  :  장갑\n=\n발  :  ?', choices:['양말','신발','구두','버선'], answer:1, domain:'verbal' },
+    { q:'의미가 가장 가까운 단어를 고르세요', visual:'"탁월하다"\n≈', choices:['평범하다','뛰어나다','부족하다','보통이다'], answer:1, domain:'verbal' },
+    { q:'아래 네 단어 中 의미가 다른 하나는?', visual:'기쁨  ·  즐거움  ·  행복  ·  슬픔', choices:['기쁨','즐거움','행복','슬픔'], answer:3, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'부분  :  전체\n=\n한 그루  :  ?', choices:['나무','숲','잎','뿌리'], answer:1, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'의사  :  병원\n=\n교사  :  ?', choices:['집','학교','책','연필'], answer:1, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'더위  :  여름\n=\n추위  :  ?', choices:['봄','가을','겨울','계절'], answer:2, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'책  :  읽다\n=\n음식  :  ?', choices:['보다','먹다','자다','달리다'], answer:1, domain:'verbal' },
+    { q:'아래 네 단어 中 가장 다른 하나는?', visual:'🔴 빨강 · 🔵 파랑 · 🟡 노랑 · ⬜ 사각형', choices:['빨강','파랑','노랑','사각형'], answer:3, domain:'verbal' },
+    { q:'유의어를 고르세요', visual:'"거대하다"\n≈', choices:['작다','크다','얇다','짧다'], answer:1, domain:'verbal' },
+    { q:'관계를 보고 ? 자리에 들어갈 단어는?', visual:'시작  :  끝\n=\n출발  :  ?', choices:['도착','이동','경로','길'], answer:0, domain:'verbal' },
+    { q:'아래 中 의미 관계가 다른 하나는?', visual:'낮:밤  ·  크다:작다  ·  뜨겁다:차갑다  ·  책:공책', choices:['낮:밤','크다:작다','뜨겁다:차갑다','책:공책'], answer:3, domain:'verbal' }
   ],
   numeric: [
-    { q:'수열의 다음 숫자는? 2, 4, 8, 16, ?', choices:['24','32','30','28'], answer:1, domain:'numeric' },
-    { q:'규칙을 찾아: 1, 1, 2, 3, 5, ?', choices:['7','8','9','10'], answer:1, domain:'numeric' },
-    { q:'3의 5제곱은?', choices:['125','243','81','729'], answer:1, domain:'numeric' },
-    { q:'다음 비율: 2:5 = 8:?', choices:['16','20','25','40'], answer:1, domain:'numeric' },
-    { q:'평균을 구하시오: 10, 20, 30, 40', choices:['20','25','30','35'], answer:1, domain:'numeric' },
-    { q:'규칙: 100 → 50 → 25 → ?', choices:['12','12.5','15','20'], answer:1, domain:'numeric' },
-    { q:'1+2+3+...+10 = ?', choices:['45','50','55','60'], answer:2, domain:'numeric' },
-    { q:'7×8 = ?', choices:['54','55','56','63'], answer:2, domain:'numeric' },
-    { q:'다음 수열: 3, 6, 12, 24, ?', choices:['36','48','60','72'], answer:1, domain:'numeric' },
-    { q:'25%는 분수로?', choices:['1/2','1/3','1/4','1/5'], answer:2, domain:'numeric' },
-    { q:'수열: 2, 6, 12, 20, 30, ?', choices:['38','40','42','44'], answer:2, domain:'numeric' },
-    { q:'규칙: 1, 4, 9, 16, ?', choices:['20','25','24','30'], answer:1, domain:'numeric' },
-    { q:'다음 중 소수(prime)인 것은?', choices:['9','15','17','21'], answer:2, domain:'numeric' },
-    { q:'사과 3개에 2,400원. 사과 5개는?', choices:['3,600','4,000','4,200','4,500'], answer:1, domain:'numeric' },
-    { q:'수열: 1, 3, 7, 15, ?', choices:['23','27','31','35'], answer:2, domain:'numeric' }
+    { q:'다음 수열에서 ? 자리에 들어갈 숫자는?', visual:'2  →  4  →  8  →  16  →  ?', choices:['24','32','30','28'], answer:1, domain:'numeric' },
+    { q:'다음 수열의 규칙을 찾으세요', visual:'1  ·  1  ·  2  ·  3  ·  5  ·  ?', choices:['7','8','9','10'], answer:1, domain:'numeric' },
+    { q:'3을 5번 곱하면 얼마인가요?', visual:'3 × 3 × 3 × 3 × 3 = ?', choices:['125','243','81','729'], answer:1, domain:'numeric' },
+    { q:'비례 관계를 보고 ? 자리에 들어갈 숫자는?', visual:'2 : 5  =  8 : ?', choices:['16','20','25','40'], answer:1, domain:'numeric' },
+    { q:'네 숫자의 평균은 얼마인가요?', visual:'10  ·  20  ·  30  ·  40', choices:['20','25','30','35'], answer:1, domain:'numeric' },
+    { q:'수열의 규칙을 찾고 다음 숫자는?', visual:'100  →  50  →  25  →  ?', choices:['12','12.5','15','20'], answer:1, domain:'numeric' },
+    { q:'1부터 10까지의 모든 숫자를 더하면?', visual:'1 + 2 + 3 + ... + 10  =  ?', choices:['45','50','55','60'], answer:2, domain:'numeric' },
+    { q:'곱셈 결과를 고르세요', visual:'7  ×  8  =  ?', choices:['54','55','56','63'], answer:2, domain:'numeric' },
+    { q:'수열의 다음 숫자는?', visual:'3  →  6  →  12  →  24  →  ?', choices:['36','48','60','72'], answer:1, domain:'numeric' },
+    { q:'25%를 분수로 나타내면?', visual:'25%  =  ?', choices:['1/2','1/3','1/4','1/5'], answer:2, domain:'numeric' },
+    { q:'수열의 다음 숫자는?', visual:'2  ·  6  ·  12  ·  20  ·  30  ·  ?', choices:['38','40','42','44'], answer:2, domain:'numeric' },
+    { q:'다음 숫자들의 규칙은? (제곱수)', visual:'1  ·  4  ·  9  ·  16  ·  ?', choices:['20','25','24','30'], answer:1, domain:'numeric' },
+    { q:'아래 네 개 중 소수(prime)는?', visual:'9   ·   15   ·   17   ·   21', choices:['9','15','17','21'], answer:2, domain:'numeric' },
+    { q:'사과 3개가 2,400원입니다. 5개는 얼마?', visual:'🍎🍎🍎 = 2,400원\n🍎🍎🍎🍎🍎 = ?', choices:['3,600','4,000','4,200','4,500'], answer:1, domain:'numeric' },
+    { q:'수열의 다음 숫자는?', visual:'1  →  3  →  7  →  15  →  ?', choices:['23','27','31','35'], answer:2, domain:'numeric' }
   ],
   memory: [
-    { q:'다음 숫자열을 기억하세요: 7, 3, 9, 1, 5 — 세 번째 숫자는?', choices:['7','9','3','1'], answer:1, domain:'memory' },
-    { q:'순서: 빨강-파랑-노랑-초록 — 두 번째 색깔은?', choices:['빨강','파랑','노랑','초록'], answer:1, domain:'memory' },
-    { q:'A-D-G-J-M — 다음 글자는?', choices:['N','O','P','Q'], answer:2, domain:'memory' },
-    { q:'다음 패턴: ●○●○● — 6번째는?', choices:['●','○','◐','◑'], answer:1, domain:'memory' },
-    { q:'역순으로 답하세요: 2, 5, 8, 11 의 역순 첫 번째는?', choices:['2','5','11','8'], answer:2, domain:'memory' },
-    { q:'단어 순서: 사과-바나나-포도-수박 — 세 번째 단어는?', choices:['사과','바나나','포도','수박'], answer:2, domain:'memory' },
-    { q:'숫자열 4, 8, 15, 16, 23, 42 — 네 번째 숫자는?', choices:['15','16','23','42'], answer:1, domain:'memory' },
-    { q:'요일 순서: 월-화-수-목-금 — 네 번째 요일은?', choices:['수','목','금','토'], answer:1, domain:'memory' },
-    { q:'알파벳: B-E-H-K — 다음은? (3씩 증가)', choices:['L','M','N','O'], answer:2, domain:'memory' },
-    { q:'순서 기억: 5-10-15-20-25 — 역순 두 번째는?', choices:['20','15','10','5'], answer:0, domain:'memory' },
-    { q:'숫자열 9, 2, 7, 4, 6 — 다섯 번째는?', choices:['9','7','4','6'], answer:3, domain:'memory' },
-    { q:'순서: 봄-여름-가을-겨울 — 세 번째 계절은?', choices:['봄','여름','가을','겨울'], answer:2, domain:'memory' },
-    { q:'패턴: △□○△□○ — 8번째는?', choices:['△','□','○','◇'], answer:1, domain:'memory' },
-    { q:'알파벳 역순: Z-Y-X-W — 다음은?', choices:['U','V','T','S'], answer:1, domain:'memory' },
-    { q:'단어 순서: 산-바다-강-호수-들판 — 역순 두 번째는?', choices:['호수','강','바다','산'], answer:0, domain:'memory' }
+    { q:'아래 숫자열을 보고 세 번째 숫자는?', visual:'7   ·   3   ·   9   ·   1   ·   5', choices:['7','9','3','1'], answer:1, domain:'memory' },
+    { q:'색깔 순서를 보고 두 번째 색깔은?', visual:'🔴 빨강 · 🔵 파랑 · 🟡 노랑 · 🟢 초록', choices:['빨강','파랑','노랑','초록'], answer:1, domain:'memory' },
+    { q:'알파벳 규칙을 찾고 다음 글자는? (3씩 증가)', visual:'A  →  D  →  G  →  J  →  M  →  ?', choices:['N','O','P','Q'], answer:2, domain:'memory' },
+    { q:'패턴을 보고 6번째 도형은?', visual:'●  ○  ●  ○  ●  ?', choices:['●','○','◐','◑'], answer:1, domain:'memory' },
+    { q:'아래 숫자열의 역순 첫 번째 숫자는?', visual:'2  ·  5  ·  8  ·  11\n(역순)', choices:['2','5','11','8'], answer:2, domain:'memory' },
+    { q:'단어 순서를 보고 세 번째 단어는?', visual:'🍎 사과 · 🍌 바나나 · 🍇 포도 · 🍉 수박', choices:['사과','바나나','포도','수박'], answer:2, domain:'memory' },
+    { q:'아래 숫자열의 네 번째 숫자는?', visual:'4  ·  8  ·  15  ·  16  ·  23  ·  42', choices:['15','16','23','42'], answer:1, domain:'memory' },
+    { q:'요일 순서에서 네 번째 요일은?', visual:'월  ·  화  ·  수  ·  목  ·  금', choices:['수','목','금','토'], answer:1, domain:'memory' },
+    { q:'알파벳 규칙을 찾고 다음 글자는? (3씩 증가)', visual:'B  →  E  →  H  →  K  →  ?', choices:['L','M','N','O'], answer:2, domain:'memory' },
+    { q:'아래 수열의 역순에서 두 번째 숫자는?', visual:'5  ·  10  ·  15  ·  20  ·  25\n(역순)', choices:['20','15','10','5'], answer:0, domain:'memory' },
+    { q:'아래 숫자열의 다섯 번째 숫자는?', visual:'9   ·   2   ·   7   ·   4   ·   6', choices:['9','7','4','6'], answer:3, domain:'memory' },
+    { q:'계절 순서를 보고 세 번째 계절은?', visual:'🌸 봄 · ☀️ 여름 · 🍁 가을 · ❄️ 겨울', choices:['봄','여름','가을','겨울'], answer:2, domain:'memory' },
+    { q:'반복되는 패턴을 보고 8번째 도형은?', visual:'△  □  ○  △  □  ○  △  ?', choices:['△','□','○','◇'], answer:1, domain:'memory' },
+    { q:'알파벳 역순 규칙을 찾고 다음 글자는?', visual:'Z  →  Y  →  X  →  W  →  ?', choices:['U','V','T','S'], answer:1, domain:'memory' },
+    { q:'단어 순서의 역순에서 두 번째 단어는?', visual:'🏔️ 산 · 🌊 바다 · 🌊 강 · 💧 호수 · 🌾 들판\n(역순)', choices:['호수','강','바다','산'], answer:0, domain:'memory' }
   ]
 };
 
@@ -2067,6 +2092,12 @@ function renderQuestion(){
     html += '<div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">인터넷 연결이 잠시 느려졌을 수 있어요<br>아래 버튼을 한 번 눌러주세요</div>';
     html += '<button onclick="cgo36ReloadImg()" style="padding:12px 28px;background:linear-gradient(135deg,#d4a843,#f0c860);color:#fff;border:none;border-radius:100px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(212,168,67,.35);font-family:inherit;">🔄 새로고침</button>';
     html += '</div>';
+    html += '</div>';
+  } else if(q.visual){
+    // C-36 V1.6 - 시각화 박스 (텍스트 문제 가독성 ↑)
+    // 大將님 동생분 피드백: "글로 된 문제 이해 어려움" → 큰 폰트 + 카드 형태로 시각화
+    html += '<div class="q-visual-box">';
+    html += '<div class="q-visual">' + q.visual.replace(/\n/g, '<br>') + '</div>';
     html += '</div>';
   } else if(q.pattern){
     var isPlaceholder = q.pattern.indexOf('🧊')>=0 || q.pattern.indexOf('🗺️')>=0;
