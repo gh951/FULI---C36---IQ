@@ -1345,7 +1345,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">C-36 · v1.0</div>
+<div class="c36-mark">C-36 · v1.0.3</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1355,11 +1355,56 @@ html, body {
 
 function isBuiltIn(){ return typeof cgoGoPage === 'function'; }
 
-// 이미지 로딩 실패 처리 + 새로고침 (C-36, 大將 직감 반영)
+// 이미지 로딩 실패 시 → 다른 경로 자동 시도 → 그래도 안되면 텍스트 폴백 (C-36 V1.0.3)
+// 大將 폴더 위치 어디 있든 자동으로 찾아냄
 function cgo36ImgFail(imgEl){
+  var box = imgEl.parentElement;
+  var q = testState.questions[testState.currentIdx];
+  if(!q) return;
+  
+  // 시도 카운터 (이미지 엘리먼트에 박음)
+  var tries = parseInt(imgEl.dataset.tries || '0', 10);
+  
+  // 大將 도형 폴더 가능한 경로 3가지 자동 시도
+  var alternatePaths = [];
+  if(q.domain === 'pattern' && q._pid){
+    alternatePaths = [
+      'pattern-images/' + q._pid + '.jpeg',           // 시도 1
+      'images/pattern-images/' + q._pid + '.jpeg',    // 시도 2
+      './pattern-images/' + q._pid + '.jpeg',         // 시도 3
+      '/pattern-images/' + q._pid + '.jpeg'           // 시도 4
+    ];
+  } else if(q.domain === 'spatial' && q._sid){
+    alternatePaths = [
+      'spatial-images/' + q._sid + '.jpeg',
+      'images/spatial-images/' + q._sid + '.jpeg',
+      './spatial-images/' + q._sid + '.jpeg',
+      '/spatial-images/' + q._sid + '.jpeg'
+    ];
+  }
+  
+  // 다음 경로 시도
+  if(tries < alternatePaths.length){
+    imgEl.dataset.tries = (tries + 1).toString();
+    imgEl.src = alternatePaths[tries] + '?t=' + Date.now();
+    return;
+  }
+  
+  // 모든 경로 실패 → 텍스트 패턴 폴백
   imgEl.style.display = 'none';
-  var fb = imgEl.parentElement.querySelector('.q-img-fallback');
-  if(fb) fb.style.display = 'block';
+  if(q.pattern){
+    var existingPattern = box.querySelector('.q-pattern-auto');
+    if(!existingPattern){
+      var patEl = document.createElement('div');
+      patEl.className = 'q-pattern q-pattern-auto';
+      patEl.style.cssText = 'font-size:clamp(26px,5vw,36px);color:#0f172a;font-weight:900;letter-spacing:.08em;font-family:JetBrains Mono,monospace;text-align:center;';
+      patEl.textContent = q.pattern;
+      box.appendChild(patEl);
+    }
+  } else {
+    var fb = box.querySelector('.q-img-fallback');
+    if(fb) fb.style.display = 'block';
+  }
 }
 function cgo36ReloadImg(){
   var q = testState.questions[testState.currentIdx];
@@ -1367,11 +1412,12 @@ function cgo36ReloadImg(){
   var box = document.getElementById('qImgBox');
   if(!box) return;
   var fb = box.querySelector('.q-img-fallback');
+  var pat = box.querySelector('.q-pattern-auto');
   var img = box.querySelector('img');
   if(fb) fb.style.display = 'none';
+  if(pat) pat.remove();
   if(img){
     img.style.display = 'block';
-    // 캐시 우회 — URL 끝에 타임스탬프 붙여 새로 요청
     img.src = q.image + '?t=' + Date.now();
   }
 }
@@ -1500,16 +1546,32 @@ function restartTest(){
 // C-36 V1.0 무중생유 박입
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// 패턴 인식 100문항 자동 생성 (大將 Flow 도형 박입)
+// 패턴 인식 100문항 자동 생성 (大將 Flow 도형 + 안전망)
+// 도형 없어도 텍스트 패턴으로 자동 폴백 - 사용자 절대 막히지 않음
 function _cgo36BuildPatternPool(){
+  // 다양한 텍스트 패턴 (이미지 로딩 실패 시 자동 사용)
+  var fallbacks = [
+    { p:'○ → ● → ○○ → ●● → ?', c:['○○○','●●●','●○●','○●○'], a:1 },
+    { p:'△ → ▲ → △△ → ▲▲ → ?', c:['△△△','▲▲▲','△▲△','▲△▲'], a:1 },
+    { p:'■ □ ■ □ ■ ?', c:['■','□','■■','□□'], a:1 },
+    { p:'● ●● ●●● ●●●● ?', c:['●●','●●●●●','●●●●●●','●'], a:1 },
+    { p:'↑ → ↓ ← ?', c:['↑','→','↓','↗'], a:0 },
+    { p:'◐ ◑ ◐ ◑ ?', c:['◐','◑','◓','◒'], a:0 },
+    { p:'1 2 4 8 16 ?', c:['24','32','30','28'], a:1 },
+    { p:'A C E G ?', c:['H','I','J','K'], a:1 },
+    { p:'⬡ ⬢ ⬡ ⬢ ?', c:['⬡','⬢','⬣','◇'], a:0 },
+    { p:'▶ ▼ ◀ ▲ ?', c:['▶','▼','◀','▲'], a:0 }
+  ];
   var pool = [];
   for(var i=1; i<=100; i++){
     var num = String(i).padStart(3,'0');
+    var fb = fallbacks[i % fallbacks.length];
     pool.push({
       q: '다음 도형 시퀀스에서 빈 칸에 들어갈 것은?',
-      image: 'images/pattern-images/p'+num+'.jpeg',
-      choices: ['A 보기','B 보기','C 보기','D 보기'],
-      answer: i % 4, // 정답 분산 (대장님 도형 따라 변경 가능)
+      image: 'pattern-images/p'+num+'.jpeg',
+      pattern: fb.p,         // 이미지 실패 시 자동 사용
+      choices: fb.c,
+      answer: fb.a,
       domain: 'pattern',
       _pid: 'p'+num
     });
@@ -1517,16 +1579,26 @@ function _cgo36BuildPatternPool(){
   return pool;
 }
 
-// 공간 추론 30문항 자동 생성 (大將 3D 큐브 박입)
+// 공간 추론 30문항 자동 생성 (大將 3D 큐브 + 안전망)
 function _cgo36BuildSpatialPool(){
+  var fallbacks = [
+    { p:'🧊 → 🧊 회전', c:['90°','180°','270°','360°'], a:0 },
+    { p:'⬢ → 거울 ?', c:['⬡','⬢','⬣','◇'], a:1 },
+    { p:'▲ 90° 회전 →', c:['▶','◀','▼','▲'], a:0 },
+    { p:'◯ + □ 합체 = ?', c:['◯','□','◯□','◐'], a:2 },
+    { p:'정육면체 펼침 → ?', c:['╋','┳','┻','╂'], a:0 },
+    { p:'블록 쌓기 1→2→4→?', c:['6','7','8','9'], a:2 }
+  ];
   var pool = [];
   for(var i=1; i<=30; i++){
     var num = String(i).padStart(3,'0');
+    var fb = fallbacks[i % fallbacks.length];
     pool.push({
       q: '다음 입체 도형의 규칙을 찾으세요',
-      image: 'images/spatial-images/s'+num+'.jpeg',
-      choices: ['A 보기','B 보기','C 보기','D 보기'],
-      answer: i % 4,
+      image: 'spatial-images/s'+num+'.jpeg',
+      pattern: fb.p,
+      choices: fb.c,
+      answer: fb.a,
       domain: 'spatial',
       _sid: 's'+num
     });
