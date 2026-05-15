@@ -899,20 +899,13 @@ html, body {
 }
 .prof-name {
   display:flex;
-  flex-direction:column;
-  gap:1px;
+  align-items:center;
 }
 .prof-name b {
-  font-size:13px;
+  font-size:14px;
   color:var(--text-1);
   font-weight:800;
-  font-family:'Inter','JetBrains Mono',sans-serif;
-  letter-spacing:.01em;
-}
-.prof-name span {
-  font-size:10px;
-  color:var(--text-3);
-  font-weight:600;
+  letter-spacing:-.01em;
 }
 .prof-grade {
   font-size:11px;
@@ -1345,13 +1338,12 @@ html, body {
     </div>
   </div>
 
-  <!-- C-36 V1.5 - Cognitive Signature (GPT 제안 ⑧) -->
+  <!-- C-36 V1.8 - 나의 인지 스타일 (大將님 한국말 명령) -->
   <div class="result-section open" id="sec-signature">
     <div class="result-section-head" onclick="toggleSec('sec-signature')">
       <div class="result-section-title">
         <span class="result-section-title-em">🧬</span>
-        Cognitive Signature
-        <span style="font-size:10px;color:var(--text-3);font-weight:600;margin-left:4px;">인지 서명 · 베타</span>
+        나의 인지 스타일
       </div>
       <div class="result-section-arrow">▼</div>
     </div>
@@ -1362,13 +1354,12 @@ html, body {
     </div>
   </div>
 
-  <!-- C-36 V1.5 - Cognitive Profile (GPT 제안 ①, 학술 표현) -->
+  <!-- C-36 V1.8 - 영역별 점수 (한국말) -->
   <div class="result-section open" id="sec-profile">
     <div class="result-section-head" onclick="toggleSec('sec-profile')">
       <div class="result-section-title">
         <span class="result-section-title-em">🔬</span>
-        Cognitive Profile
-        <span style="font-size:10px;color:var(--text-3);font-weight:600;margin-left:4px;">인지 프로파일 (베타)</span>
+        영역별 점수
       </div>
       <div class="result-section-arrow">▼</div>
     </div>
@@ -1377,8 +1368,8 @@ html, body {
         <div style="text-align:center;color:var(--text-3);font-size:13px;padding:16px;">— 분석 중 —</div>
       </div>
       <div style="margin-top:12px;font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;font-weight:600;">
-        Measurement stability · Reasoning latency profile · Adaptive calibration confidence<br>
-        <span style="color:var(--gold-deep);">※ 표본 누적 後 V2부터 standardized norm 비교 활성화</span>
+        측정 안정도 · 반응 시간 패턴 · 신뢰도 보정<br>
+        <span style="color:var(--gold-deep);">※ 사용자 데이터 누적 後 V2부터 표준 기준 비교 활성화</span>
       </div>
     </div>
   </div>
@@ -1495,7 +1486,7 @@ html, body {
       <b>FULI 생태계</b><br>
       CGO MESSAGE · cgo-voice-db · MUFE 백신 · 사령탑 · 나의 아이큐<br>
       <span style="color:var(--text-3);">PCT 10-2026-0060113 · 발명자 이주원·이길원</span><br>
-      <span style="color:var(--text-3);">C-36 · V1.7 (베타) · 175문항 · 모든 보기 이모지 + 단순 한국어 · ED.2026</span>
+      <span style="color:var(--text-3);">C-36 · V1.8 (베타) · 175문항 · 결과 全 한국말 · ED.2026</span>
     </div>
   </div>
 </div>
@@ -1520,7 +1511,7 @@ html, body {
 <button class="exit-btn" onclick="goHome()">🏠 나가기</button>
 
 <!-- C-36 마커 -->
-<div class="c36-mark">나의 아이큐 · v1.7 (beta)</div>
+<div class="c36-mark">나의 아이큐 · v1.8 (beta)</div>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -2332,20 +2323,22 @@ function calculateResult(){
 // C-36 V1.5 - Cognitive Signature 빌더
 // GPT 제안 ⑧: "빠른 직관형 추론자 / 높은 규칙 압축 능력 / 낮은 인지 지속성" 같은 스타일 분석
 function _cgo36BuildSignature(correctRatio, rtList, avgChanges, domainScores){
+  // C-36 V1.8 - 大將님 명령: "영어는 남녀노소 X, 한국말로"
+  // 大將님 동생분 + 어머님 + 어린이까지 다 이해 가능하게
   var sig = { traits: [], style: '', detail: '' };
   
-  // 1) 추론 속도 (반응시간 기반)
+  // 1) 반응 속도 (반응시간 기반)
   var rtAvg = rtList.length > 0 ? rtList.reduce(function(a,b){return a+b;},0)/rtList.length : 0;
   var speedTier;
-  if(rtAvg < 5000)       { speedTier = '🚀 신속 직관형';   sig.traits.push({label:'Reasoning Speed', value:'Fast'}); }
-  else if(rtAvg < 12000) { speedTier = '⚡ 균형 분석형';   sig.traits.push({label:'Reasoning Speed', value:'Balanced'}); }
-  else                   { speedTier = '🔬 심층 숙고형';   sig.traits.push({label:'Reasoning Speed', value:'Deliberate'}); }
+  if(rtAvg < 5000)       { speedTier = '🚀 빠른 직관형';   sig.traits.push({label:'반응 속도', value:'빠름'}); }
+  else if(rtAvg < 12000) { speedTier = '⚡ 균형 분석형';   sig.traits.push({label:'반응 속도', value:'균형'}); }
+  else                   { speedTier = '🔬 깊은 사고형';   sig.traits.push({label:'반응 속도', value:'신중함'}); }
   
-  // 2) 확신도 (선택 변경 횟수 기반)
+  // 2) 결정 확신도 (선택 변경 횟수 기반)
   var confidence;
-  if(avgChanges < 0.1)   { confidence = '높은 확신';       sig.traits.push({label:'Decision Confidence', value:'High'}); }
-  else if(avgChanges < 0.3){ confidence = '신중한 검토';   sig.traits.push({label:'Decision Confidence', value:'Moderate'}); }
-  else                   { confidence = '탐색적 수정';     sig.traits.push({label:'Decision Confidence', value:'Exploratory'}); }
+  if(avgChanges < 0.1)   { confidence = '높은 확신';       sig.traits.push({label:'결정 확신', value:'높음'}); }
+  else if(avgChanges < 0.3){ confidence = '신중한 검토';   sig.traits.push({label:'결정 확신', value:'보통'}); }
+  else                   { confidence = '탐색적 수정';     sig.traits.push({label:'결정 확신', value:'탐색형'}); }
   
   // 3) 인지 영역 강점 (가장 높은 영역)
   var maxDomain = 'pattern', maxScore = 0;
@@ -2353,27 +2346,27 @@ function _cgo36BuildSignature(correctRatio, rtList, avgChanges, domainScores){
     if(domainScores[d] > maxScore){ maxScore = domainScores[d]; maxDomain = d; }
   });
   var domainNameMap = {
-    pattern: '추상 패턴 인식',
+    pattern: '도형 패턴 인식',
     spatial: '공간 추론',
     verbal:  '언어 추론',
     numeric: '수리 논리',
     memory:  '작업 기억'
   };
   var strength = domainNameMap[maxDomain];
-  sig.traits.push({label:'Cognitive Strength', value:strength});
+  sig.traits.push({label:'강한 영역', value:strength});
   
   // 4) 전반적 능력 추정
   var efficiency;
-  if(correctRatio >= 0.85)      efficiency = 'Exceptional';
-  else if(correctRatio >= 0.75) efficiency = 'High';
-  else if(correctRatio >= 0.60) efficiency = 'Above Average';
-  else if(correctRatio >= 0.40) efficiency = 'Average';
-  else                          efficiency = 'Developing';
-  sig.traits.push({label:'Reasoning Efficiency', value:efficiency});
+  if(correctRatio >= 0.85)      efficiency = '매우 우수';
+  else if(correctRatio >= 0.75) efficiency = '우수';
+  else if(correctRatio >= 0.60) efficiency = '평균 이상';
+  else if(correctRatio >= 0.40) efficiency = '평균';
+  else                          efficiency = '성장 中';
+  sig.traits.push({label:'전반적 능력', value:efficiency});
   
-  // Signature 텍스트 조합
+  // Signature 텍스트 조합 (한국말)
   sig.style = speedTier + ' · ' + confidence;
-  sig.detail = strength + ' 강점 · 추론 효율 ' + efficiency;
+  sig.detail = strength + '이 강점 · 전반적 능력 ' + efficiency;
   
   return sig;
 }
@@ -2392,17 +2385,18 @@ function _cgo36RenderSignature(sig){
   el.innerHTML = html;
 }
 
-// C-36 V1.5 - 인지 프로파일 (GPT 제안 ①)
-// "Fluid abstraction: Exceptional" 같은 학술 표현
+// C-36 V1.8 - 인지 프로파일 (한국말 全)
+// 大將님 명령: "영어는 남녀노소 X" + "WW IQ 회사처럼 단순"
+// 영문 라벨 제거 → 한국어 한 줄로 통일
 function _cgo36RenderProfile(fuliScores, margins, pctScores){
   var el = document.getElementById('cognitiveProfile');
   if(!el) return;
   var domains = [
-    { id:'pattern', en:'Fluid Reasoning',     kr:'유동지능 (추상 패턴)' },
-    { id:'spatial', en:'Spatial Cognition',   kr:'공간 인지' },
-    { id:'verbal',  en:'Verbal Abstraction',  kr:'언어 추상' },
-    { id:'numeric', en:'Quantitative Logic',  kr:'수리 논리' },
-    { id:'memory',  en:'Working Memory',      kr:'작업 기억' }
+    { id:'pattern', kr:'도형 패턴 인식' },
+    { id:'spatial', kr:'공간 추론' },
+    { id:'verbal',  kr:'언어 추론' },
+    { id:'numeric', kr:'수리 논리' },
+    { id:'memory',  kr:'작업 기억' }
   ];
   var html = '';
   domains.forEach(function(d){
@@ -2410,14 +2404,15 @@ function _cgo36RenderProfile(fuliScores, margins, pctScores){
     var mg = margins[d.id];
     var pct = pctScores[d.id];
     var grade;
-    if(pct >= 90)      grade = 'Exceptional';
-    else if(pct >= 75) grade = 'High';
-    else if(pct >= 60) grade = 'Above Average';
-    else if(pct >= 40) grade = 'Average';
-    else               grade = 'Developing';
+    // 한국말 등급 (大將님 명령)
+    if(pct >= 90)      grade = '매우 우수';
+    else if(pct >= 75) grade = '우수';
+    else if(pct >= 60) grade = '평균 이상';
+    else if(pct >= 40) grade = '평균';
+    else               grade = '성장 中';
     var scoreText = (sc !== null && sc !== undefined) ? sc + ' ±' + mg : '—';
     html += '<div class="prof-row">';
-    html += '<div class="prof-name"><b>' + d.en + '</b><span>' + d.kr + '</span></div>';
+    html += '<div class="prof-name"><b>' + d.kr + '</b></div>';
     html += '<div class="prof-grade">' + grade + '</div>';
     html += '<div class="prof-score">' + scoreText + '</div>';
     html += '</div>';
